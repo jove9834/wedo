@@ -10,9 +10,6 @@
 namespace Wedo\View;
 
 use Wedo\ViewInterface;
-use Wedo\View\BladeCompiler;
-use Wedo\View\PhpEngine;
-use Wedo\Filesystem;
 use Wedo\Support\NamespacedItemResolver;
 use Exception;
 /**
@@ -60,10 +57,12 @@ class ViewBlade implements ViewInterface {
      * @var int
      */
     protected $renderCount = 0;
-   
+
     /**
      * 为视图引擎分配一个模板变量
      *
+     * @param mixed $name  变量名称
+     * @param mixed $value 值
      * @return void
      */
     public function assign($name, $value = NULL) {
@@ -82,6 +81,11 @@ class ViewBlade implements ViewInterface {
         }
     }
 
+    /**
+     * @param string     $tpl      模板
+     * @param array|NULL $tpl_vars 变量
+     * @return string
+     */
     public function make($tpl, array $tpl_vars = NULL) {
         $this->incrementRender();
         $cacheFile = $this->compile($tpl);
@@ -114,7 +118,7 @@ class ViewBlade implements ViewInterface {
      *
      * @param string $tpl      模板
      * @param array  $tpl_vars 模板变量
-     * @return string
+     * @return void
      */
     public function display($tpl, array $tpl_vars = NULL) {
         echo $this->render($tpl, $tpl_vars);
@@ -125,13 +129,13 @@ class ViewBlade implements ViewInterface {
      *
      * @param string $tpl 模板
      * @return string
-     * @throws Exception
+     * @throws \Exception
      */
     public function compile($tpl) {
         $_file = $this->find($tpl);
 
         if ($_file === FALSE) {
-            throw new Exception('视图文件不存在:' . $tpl);
+            throw new \Exception('视图文件不存在:' . $tpl);
         }
 
         $compiler = new BladeCompiler();
