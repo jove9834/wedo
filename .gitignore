@@ -4,3 +4,6 @@ config/redis.php
 
 # data
 data/*
+
+# IDE
+.idea/*
