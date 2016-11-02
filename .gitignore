@@ -1,0 +1,6 @@
+# db
+config/database.php
+config/redis.php
+
+# data
+data/*
