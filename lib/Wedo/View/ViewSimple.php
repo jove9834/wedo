@@ -116,15 +116,16 @@ class ViewSimple implements ViewInterface {
      * 编译字符串
      *
      * @param string $content 内容
+     * @param array $vars     变量
      * @return string
      */
     public function compileString($content, array $vars = NULL) {
         // 生成临时文件
-        $files = new Filesystem();
         $cachePath = DATA_PATH . DIRECTORY_SEPARATOR . 'views';
         $fileName = md5($content) . $this->_tpl_ext;
         $file = $cachePath . DIRECTORY_SEPARATOR . $fileName;
-        $files->put($file);
+        $files = new Filesystem();
+        $files->put($file, $content);
 
         $this->assign($vars);
         $engine = new PhpEngine();
