@@ -3,8 +3,7 @@ config/database.php
 config/redis.php
 
 # data
-data/*
+data/
 
 # IDE
-.idea
-.idea/*
+.idea/
