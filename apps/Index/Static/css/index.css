@@ -1,0 +1,78 @@
+/** Box **/
+/*  content-box */
+.st{
+    margin: 0;
+}
+.ctb{
+    position: relative;
+    margin-top: 20px;
+    padding: 30px 30px 30px 0;
+    border-top: 1px solid #E5E9EE;
+}
+.ctbw{
+    width: 510px;
+}
+.ctbp{
+    padding-left: 80px;
+}
+.ctb .st{
+    position: absolute;
+    padding-right: 20px;
+    top: -20px;
+    left: 0;
+    background-color: #F5F7F8;
+}
+h1,
+h2,
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  line-height: 40px;
+}
+/*----------------------------------------------------- index */
+.system-info-wrap{
+    position: relative;
+}
+.system-info-wrap .card-circle{
+    -webkit-transition: -webkit-transform linear .5s;
+    -moz-transition: -moz-transform linear .5s;
+    -o-transition: -o-transform linear .5s;
+    transition: transform linear .5s;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.system-info{
+    margin-left: 120px;
+    line-height: 40px;
+}
+.system-info .toggle{
+    margin-top: 6px;
+}
+.system-info strong{
+    font-size: 20px;
+    vertical-align: middle;
+}
+.system-info-date{
+    margin: 0 12px;
+    font-size: 14px;
+    font-weight: 700;
+    vertical-align: middle;
+}
+
+.card-circle-success .card-circle-icon{
+    background-position: -40px -100px;
+}
+.card-circle-icon {
+    display: inline-block;
+    margin-top: 5px;
+    width: 40px;
+    height: 40px;
+}
+.card-circle,
+.card-circle-icon{
+    background-image: url(../img/Circle_card.png);
+    background-repeat: no-repeat;
+}
+
