@@ -25,7 +25,7 @@ class Router {
     /**
      * 当前路由数组
      *
-     * @var array
+     * @var RouteInterface
      */
     protected $_current;
 
@@ -33,8 +33,8 @@ class Router {
      * 添加路由规则
      *
      * @param string $name        路由规则名称
-     * @param Wedo\RouteInterface $route 路由规则
-     * @return Wedo\Router
+     * @param RouteInterface $route 路由规则
+     * @return Router
      */
     public function addRoute($name, RouteInterface $route) {
         $this->_routes[$name] = $route;
@@ -44,7 +44,7 @@ class Router {
     /**
      * 获取当前路由规则
      *
-     * @return Wedo\RouteInterface
+     * @return RouteInterface
      */
     public function getCurrentRoute() {
         return $this->_current;
@@ -53,7 +53,8 @@ class Router {
     /**
      * 根据路由规则名称取路由规则实例
      *
-     * @return Wedo\RouteInterface 当不存在，则返回FALSE
+     * @param string $name 路由名称
+     * @return RouteInterface 当不存在，则返回FALSE
      */
     public function getRoute($name) {
         return wd_array_val($this->_routes, $name);

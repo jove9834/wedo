@@ -1,15 +1,13 @@
 <?php
 /**
  * 响应
- * 
+ *
  * @author    黄文金
  * @copyright Copyright (c) 2014 - 2015, Wedo, Inc. (http://weidu178.com/)
  * @link      http://weidu178.com
  * @since     Version 1.0
  */
 namespace Wedo;
-
-use Wedo\Logger;
 
 /**
  * 响应
@@ -18,18 +16,18 @@ class Response {
     /**
      * 输出JSON格式
      *
-     * @return void
+     * @param array $data 要输出的数组
      */
-    public static function toJson($data) {
-        self::print(json_encode($data, JSON_UNESCAPED_UNICODE));
+    public static function toJson(array $data) {
+        self::echoText(json_encode($data, JSON_UNESCAPED_UNICODE));
     }
 
     /**
      * 输出文本
      *
-     * @return void
+     * @param string $text 输出的文本
      */
-    public static function print($text) {
+    public static function echoText($text) {
         echo $text;
     }
 }

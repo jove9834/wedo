@@ -10,6 +10,7 @@
 namespace Wedo\View;
 
 use Wedo\ViewInterface;
+use Wedo\Filesystem;
 /**
  * 默认视图引擎
  */
@@ -38,6 +39,8 @@ class ViewSimple implements ViewInterface {
     /**
      * 为视图引擎分配一个模板变量
      *
+     * @param mixed $name  变量名
+     * @param mixed $value 变量值
      * @return void
      */
     public function assign($name, $value = NULL) {
@@ -64,13 +67,19 @@ class ViewSimple implements ViewInterface {
      * @return string
      */
     public function render($tpl, array $tpl_vars = NULL) {
-        $this->assign($this->_tpl_vars);
+        $this->assign($tpl_vars);
         $file = $this->compile($tpl);
         $engine = new PhpEngine();
-        return $engine->evaluatePath($file, $tpl_vars);
+        return $engine->evaluatePath($file, $this->_tpl_vars);
     }
 
-    
+    /**
+     * 视图宣染
+     *
+     * @param string $tpl      模板
+     * @param array  $tpl_vars 视图数据
+     * @return void
+     */
     public function display($tpl, array $tpl_vars = NULL) {
         $this->render($tpl, $tpl_vars);
     }
@@ -83,7 +92,6 @@ class ViewSimple implements ViewInterface {
      */
     public function exists($tpl) {
         $_file = $this->find($tpl);
-
         return $_file !== FALSE;
     }
 
@@ -92,15 +100,35 @@ class ViewSimple implements ViewInterface {
      *
      * @param string $tpl 模板
      * @return string 返回编译后的文件全路径
+     * @throws \Exception
      */
     public function compile($tpl) {
         $_file = $this->find($tpl);
 
         if ($_file === FALSE) {
-            throw new Exception('视图文件不存在:{}' . $tpl);
+            throw new \Exception('视图文件不存在:{}' . $tpl);
         }
 
         return $_file;
+    }
+
+    /**
+     * 编译字符串
+     *
+     * @param string $content 内容
+     * @return string
+     */
+    public function compileString($content, array $vars = NULL) {
+        // 生成临时文件
+        $files = new Filesystem();
+        $cachePath = DATA_PATH . DIRECTORY_SEPARATOR . 'views';
+        $fileName = md5($content) . $this->_tpl_ext;
+        $file = $cachePath . DIRECTORY_SEPARATOR . $fileName;
+        $files->put($file);
+
+        $this->assign($vars);
+        $engine = new PhpEngine();
+        return $engine->evaluatePath($file, $this->_tpl_vars);
     }
 
     /**

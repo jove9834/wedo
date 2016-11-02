@@ -34,7 +34,7 @@ interface ViewInterface {
      *
      * @param string $tpl      模板
      * @param array  $tpl_vars 视图数据
-     * @return boolean
+     * @return void
      */
     public function render($tpl, array $tpl_vars = NULL);
     /**
@@ -65,7 +65,6 @@ interface ViewInterface {
      * @return void
      */
     public function addLocation($path);
-    public function addTemplateExt($ext);
     public function getPaths();
     public function getTemplateExt();
 }

@@ -10,7 +10,6 @@
 namespace Wedo;
 
 use Wedo\View\ViewBlade;
-// use Wedo\View\ViewSimple;
 
 /**
  * 控制器基类
@@ -70,7 +69,7 @@ class ControllerAbstract {
      * @return string
      */
     protected function render($tpl = NULL, array $tpl_vars = NULL) {
-        $module_view_path = Dispatcher::getInstance()->getModulePath($this->getModule()) . '/Views';
+        $module_view_path = Dispatcher::getInstance()->getModulePath($this->getModule()) . '/views';
 
         $this->setViewPath($module_view_path);
         $_view = $this->getView();
