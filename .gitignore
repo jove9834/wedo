@@ -6,4 +6,5 @@ config/redis.php
 data/*
 
 # IDE
+.idea
 .idea/*
