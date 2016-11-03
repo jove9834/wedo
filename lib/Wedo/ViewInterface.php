@@ -26,7 +26,7 @@ interface ViewInterface {
      *
      * @param string $tpl      模板
      * @param array  $tpl_vars 视图数据
-     * @return boolean
+     * @return void
      */
     public function display($tpl, array $tpl_vars = NULL);
     /**
@@ -34,7 +34,7 @@ interface ViewInterface {
      *
      * @param string $tpl      模板
      * @param array  $tpl_vars 视图数据
-     * @return void
+     * @return string
      */
     public function render($tpl, array $tpl_vars = NULL);
     /**

@@ -9,8 +9,6 @@
  */
 namespace Wedo;
 
-use Wedo\Logger;
-
 /**
  * 请求
  */
@@ -241,7 +239,7 @@ class Request {
     /**
      * 获取Action名称，不含后缀Action
      *
-     * @return Request
+     * @return string
      */
     public function getAction() {
         return $this->_action;
@@ -310,8 +308,9 @@ class Request {
      *
      * Do some final cleaning of the URI and return it, currently only used in self::_parse_request_uri()
      *
-     * @param   string  $url
-     * @return  string
+     * @param string $uri URI
+     * @return string
+     * @internal param string $url
      */
     protected function removeRelativeDirectory($uri) {
         $uris = array();
@@ -378,6 +377,7 @@ class Request {
 
         $this->_ip_address = $_SERVER['REMOTE_ADDR'];
         if ($proxy_ips) {
+            $spoof = NULL;
             foreach (array('HTTP_X_FORWARDED_FOR', 'HTTP_CLIENT_IP', 'HTTP_X_CLIENT_IP', 'HTTP_X_CLUSTER_CLIENT_IP') as $header) {
                 if (($spoof = $_SERVER[$header]) !== NULL) {
                     // Some proxies typically list the whole chain of IP
@@ -442,24 +442,26 @@ class Request {
                     }
 
                     // Split the netmask length off the network address
-                    sscanf($proxy_ips[$i], '%[^/]/%d', $netaddr, $masklen);
+                    $netAddr = '';
+                    $masklen = 0;
+                    sscanf($proxy_ips[$i], '%[^/]/%d', $netAddr, $masklen);
 
                     // Again, an IPv6 address is most likely in a compressed form
                     if ($separator === ':')
                     {
-                        $netaddr = explode(':', str_replace('::', str_repeat(':', 9 - substr_count($netaddr, ':')), $netaddr));
+                        $netAddr = explode(':', str_replace('::', str_repeat(':', 9 - substr_count($netAddr, ':')), $netAddr));
                         for ($i = 0; $i < 8; $i++)
                         {
-                            $netaddr[$i] = intval($netaddr[$i], 16);
+                            $netAddr[$i] = intval($netAddr[$i], 16);
                         }
                     }
                     else
                     {
-                        $netaddr = explode('.', $netaddr);
+                        $netAddr = explode('.', $netAddr);
                     }
 
                     // Convert to binary and finally compare
-                    if (strncmp($ip, vsprintf($sprintf, $netaddr), $masklen) === 0)
+                    if (strncmp($ip, vsprintf($sprintf, $netAddr), $masklen) === 0)
                     {
                         $this->_ip_address = $spoof;
                         break;

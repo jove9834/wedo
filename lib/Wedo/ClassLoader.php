@@ -14,7 +14,8 @@ use Wedo\Exception\ClassNotFoundException;
 /**
  * ClassLoader
  */
-class ClassLoader {
+class ClassLoader
+{
     // PSR-4
     private $prefixLengthsPsr4 = array();
     private $prefixDirsPsr4 = array();
@@ -125,8 +126,9 @@ class ClassLoader {
     /**
      * Loads the given class or interface.
      *
-     * @param  string    $class The name of the class
+     * @param  string $class The name of the class
      * @return bool|null True if loaded, null otherwise
+     * @throws ClassNotFoundException
      */
     public function loadClass($class)
     {

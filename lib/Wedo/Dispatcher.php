@@ -10,10 +10,8 @@
 namespace Wedo;
 
 use Wedo\View\ViewBlade;
-use \Exception;
 use Wedo\Exception\ClassNotFoundException;
 use Wedo\Exception\CHttpException;
-use Wedo\ViewInterface;
 
 /**
  * 分发，初始化运行环境
@@ -175,7 +173,7 @@ class Dispatcher {
      * 设置视图处理实例
      *
      * @param ViewInterface $view 视图实例
-     * @return \Wedo\Dispatcher
+     * @return Dispatcher
      */
     public function setView(ViewInterface $view) {
         $this->_view = $view;
@@ -197,7 +195,7 @@ class Dispatcher {
      * 设置默认模块名称
      *
      * @param string $module 模块名称 
-     * @return \Wedo\Dispatcher
+     * @return Dispatcher
      */
     public function setDefaultModule($module) {
         $this->_default_module = $module;
@@ -217,7 +215,7 @@ class Dispatcher {
      * 设置默认控制器名称
      *
      * @param string $controller 控制器名称 
-     * @return \Wedo\Dispatcher
+     * @return Dispatcher
      */
     public function setDefaultController($controller) {
         $this->_default_controller = $controller;
@@ -265,7 +263,7 @@ class Dispatcher {
      * 设置默认Action
      *
      * @param string $action Action名称
-     * @return \Wedo\Dispatcher
+     * @return Dispatcher
      */
     public function setDefaultAction($action) {
         $this->_default_action = $action;
@@ -280,26 +278,6 @@ class Dispatcher {
     public function getDefaultAction() {
         return $this->_default_action;
     }
-
-    /**
-     * 禁用视图
-     *
-     * @return \Wedo\Dispatcher
-     */
-//    public function disableView() {
-//        $this->autoRender(FALSE);
-//        return $this;
-//    }
-
-    /**
-     * 启用视图
-     *
-     * @return \Wedo\Dispatcher
-     */
-//    public function enableView() {
-//        $this->autoRender(TRUE);
-//        return $this;
-//    }
 
     /**
      * 获取应用实例

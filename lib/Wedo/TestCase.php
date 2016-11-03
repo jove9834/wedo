@@ -16,17 +16,25 @@ use ReflectionMethod;
 /**
  * 测试用例
  */
-class TestCase extends Testify{    
+class TestCase extends Testify
+{
 
     /**
      * 构造函数
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
-
     }
 
-    public function run($class = NULL) {
+    /**
+     * 运行测试类
+     *
+     * @param string $class
+     * @return Testify
+     */
+    public function run($class = NULL)
+    {
         $reflection = new ReflectionClass($class);
         $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
         foreach ($methods as $m) {
@@ -38,7 +46,7 @@ class TestCase extends Testify{
             $this->test($m->name, $closure);
         }
 
-        parent::run();
+        return parent::run();
     }
 
 }

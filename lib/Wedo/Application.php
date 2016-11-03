@@ -12,7 +12,8 @@ namespace Wedo;
 /**
  * Application
  */
-class Application {
+class Application
+{
     /**
      * 应用版本号
      *
@@ -74,7 +75,8 @@ class Application {
      *
      * @param string $envrion
      */
-    public function __construct($envrion = NULL) {
+    public function __construct($envrion = NULL)
+    {
         self::$_app = &$this;
         $envrion OR $this->_environ = $envrion;
         
@@ -89,7 +91,8 @@ class Application {
      *
      * @return \Wedo\Application
      */
-    public static function app() {
+    public static function app()
+    {
         return self::$_app;
     }
 
@@ -98,7 +101,8 @@ class Application {
      *
      * @return void
      */
-    private function init() {
+    private function init()
+    {
         defined('WEDO_TRACE_LEVEL') or define('WEDO_TRACE_LEVEL', 0);
         defined('WEDO_DEBUG') or define('WEDO_DEBUG', TRUE);
         // 初始化系统处理
@@ -125,7 +129,8 @@ class Application {
      *
      * @return void
      */
-    public function run() {
+    public function run()
+    {
         // 初始化
         $this->init();
         // 解析请求
@@ -137,7 +142,8 @@ class Application {
      *
      * @throws \Exception
      */
-    public function testing() {
+    public function testing()
+    {
         $this->init();
         $args = array_slice($_SERVER['argv'], 1);
         foreach ($args as $val) {
@@ -164,7 +170,8 @@ class Application {
      *
      * @return string
      */
-    public function environ() {
+    public function environ()
+    {
         return $this->_environ;
     }
 
@@ -173,7 +180,8 @@ class Application {
      *
      * @return string
      */
-    public function getAppsNsPrefix() {
+    public function getAppsNsPrefix()
+    {
         return $this->_apps_ns_prefix;
     }
 
@@ -183,7 +191,8 @@ class Application {
      * @return array
      * @throws \Exception
      */
-    public function getModules() {
+    public function getModules()
+    {
         if ($this->_modules) {
             return $this->_modules;
         }
@@ -206,7 +215,8 @@ class Application {
      *
      * @return void
      */
-    protected function autoLoadClass() {
+    protected function autoLoadClass()
+    {
         $autoClass = $this->getAutoLoadClass();
         foreach ($autoClass as $key => $file) {
             require_once $file;
@@ -218,7 +228,8 @@ class Application {
      *
      * @return array
      */
-    private function getAutoLoadClass() {
+    private function getAutoLoadClass()
+    {
         return array(
             'Common' => __DIR__ . '/Common.php',
             'ClassLoader' => __DIR__ . '/ClassLoader.php',
@@ -235,7 +246,8 @@ class Application {
      * @return void
      * @throws \Exception
      */
-    protected function definePathConst() {
+    protected function definePathConst()
+    {
         if (! defined('BASE_PATH')) {
             throw new \Exception('必须先设置BASE_PATH常量');
         }
@@ -261,7 +273,8 @@ class Application {
      *
      * @return boolean
      */
-    public function isCli() {
+    public function isCli()
+    {
         return php_sapi_name() == 'cli';
     }
 
@@ -270,7 +283,8 @@ class Application {
      *
      * @return string
      */
-    public function getAppDirectory() {
+    public function getAppDirectory()
+    {
         return $this->_app_directory;
     }
 
@@ -279,16 +293,18 @@ class Application {
      *
      * @return Dispatcher
      */
-    public function getDispatcher() {
+    public function getDispatcher()
+    {
         return Dispatcher::getInstance();
     }
 
     /**
      * 获取语言类实例
      *
-     * @return \Wedo\Language
+     * @return Language
      */
-    public function language() {
+    public function language()
+    {
         $this->_language OR $this->_language = new Language();
         return $this->_language;
     }
@@ -298,7 +314,8 @@ class Application {
      *
      * @return string
      */
-    public function getVersion() {
+    public function getVersion()
+    {
         return self::APP_VERSION;
     }
 
@@ -307,7 +324,8 @@ class Application {
      *
      * @return void
      */
-    protected function initSystemHandlers() {
+    protected function initSystemHandlers()
+    {
         set_exception_handler(array($this,'handleException'));
         set_error_handler(array($this,'handleError'),error_reporting());
     }
@@ -320,15 +338,13 @@ class Application {
      *
      * @param \Exception $exception the uncaught exception
      */
-    public function displayException(\Exception $exception) {
-        if(WEDO_DEBUG)
-        {
+    public function displayException(\Exception $exception)
+    {
+        if(WEDO_DEBUG) {
             echo '<h1>' . get_class($exception) . "</h1>\n";
             echo '<p>' . $exception->getMessage() . ' (' . $exception->getFile() . ':' . $exception->getLine() . ')</p>';
             echo '<pre>' . $exception->getTraceAsString() . '</pre>';
-        }
-        else
-        {
+        } else {
             echo '<h1>' . get_class($exception) . "</h1>\n";
             echo '<p>' . $exception->getMessage() . '</p>';
         }
@@ -345,7 +361,8 @@ class Application {
      * @param string $file error file
      * @param string $line error line
      */
-    public function displayError($code,$message,$file,$line) {
+    public function displayError($code,$message,$file,$line)
+    {
         if (WEDO_DEBUG) {
             echo "<h1>PHP Error [$code]</h1>\n";
             echo "<p>$message ($file:$line)</p>\n";
@@ -359,15 +376,15 @@ class Application {
 
             foreach ($trace as $i => $t) {
                 if (!isset($t['file'])) {
-                    $t['file']='unknown';
+                    $t['file'] = 'unknown';
                 }
 
                 if (!isset($t['line'])) {
-                    $t['line']=0;
+                    $t['line'] = 0;
                 }
 
                 if (!isset($t['function'])) {
-                    $t['function']='unknown';
+                    $t['function'] = 'unknown';
                 }
 
                 echo "#$i {$t['file']}({$t['line']}): ";
@@ -399,7 +416,8 @@ class Application {
      *
      * @param \Exception $exception exception that is not caught
      */
-    public function handleException(\Exception $exception) {
+    public function handleException(\Exception $exception)
+    {
         // disable error capturing to avoid recursive errors
         restore_error_handler();
         restore_exception_handler();
@@ -428,8 +446,7 @@ class Application {
                 $handler = new \Wedo\Exception\CErrorHandler();
                 $handler->handle($event);
             }
-        }
-        catch(\Exception $e) {
+        } catch(\Exception $e) {
             $this->displayException($e);
         }
 
@@ -455,8 +472,7 @@ class Application {
      */
     public function handleError($code,$message,$file,$line)
     {
-        if($code & error_reporting())
-        {
+        if($code & error_reporting()) {
             // disable error capturing to avoid recursive errors
             restore_error_handler();
             restore_exception_handler();
@@ -470,19 +486,19 @@ class Application {
 
             foreach($trace as $i=>$t) {
                 if(!isset($t['file']))
-                    $t['file']='unknown';
+                    $t['file'] = 'unknown';
                 if(!isset($t['line']))
-                    $t['line']=0;
+                    $t['line'] = 0;
                 if(!isset($t['function']))
-                    $t['function']='unknown';
-                $log.="#$i {$t['file']}({$t['line']}): ";
+                    $t['function'] = 'unknown';
+                $log .= "#$i {$t['file']}({$t['line']}): ";
                 if(isset($t['object']) && is_object($t['object']))
-                    $log.=get_class($t['object']).'->';
-                $log.="{$t['function']}()\n";
+                    $log .= get_class($t['object']).'->';
+                $log .= "{$t['function']}()\n";
             }
 
             if (isset($_SERVER['REQUEST_URI'])) {
-                $log.='REQUEST_URI='.$_SERVER['REQUEST_URI'];
+                $log .= 'REQUEST_URI='.$_SERVER['REQUEST_URI'];
             }
 
             Logger::error($log . "\n");
@@ -498,9 +514,7 @@ class Application {
                     $handler = new \Wedo\Exception\CErrorHandler();
                     $handler->handle($event);
                 }
-            }
-            catch(\Exception $e)
-            {
+            } catch(\Exception $e) {
                 $this->displayException($e);
             }
 

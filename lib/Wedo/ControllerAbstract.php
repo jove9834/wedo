@@ -14,7 +14,8 @@ use Wedo\View\ViewBlade;
 /**
  * 控制器基类
  */
-class ControllerAbstract {
+class ControllerAbstract
+{
     /**
      * 视图路径
      *

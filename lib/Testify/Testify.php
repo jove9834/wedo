@@ -120,7 +120,7 @@ class Testify {
     /**
      * Run all the tests and before / after functions. Calls {@see report} to generate the HTML report page.
      *
-     * @return $this
+     * @return Testify
      */
     public function run($class = NULL)
     {

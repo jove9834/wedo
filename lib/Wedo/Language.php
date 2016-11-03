@@ -9,8 +9,6 @@
  */
 namespace Wedo;
 
-use Wedo\Logger;
-
 /**
  * 语言类
  */
@@ -39,29 +37,30 @@ class Language {
     /**
      * 加载一个语言文件
      *
-     * @param mixed  $langfile 语言文件名,默认扩展名为.php，语言文件名可不带扩展名
+     * @param string $langFile 语言文件名,默认扩展名为.php，语言文件名可不带扩展名
      * @param string $idiom    idiom
      * @return Language
+     * @throws \Exception
      */
-    public function load($langfile, $idiom = '') {
-        $langfile = str_replace('.php', '', $langfile);
-        $langfile .= '.php';
+    public function load($langFile, $idiom = '') {
+        $langFile = str_replace('.php', '', $langFile);
+        $langFile .= '.php';
 
         if (empty($idiom) || ! ctype_alpha($idiom)) {
             $idiom = defined('LANGUAGE') ? LANGUAGE : 'zh_cn';
         }
 
-        if (isset($this->isLoaded[$langfile]) && $this->isLoaded[$langfile] === $idiom) {
+        if (isset($this->isLoaded[$langFile]) && $this->isLoaded[$langFile] === $idiom) {
             return $this;
         }
 
         $lang = array();
         $found = FALSE;
-        foreach (self::$location as $path) {
-            $file = wd_print('{}/language/{}/{}', $path, $idiom, $langfile);
+        foreach ($this->location as $path) {
+            $file = wd_print('{}/language/{}/{}', $path, $idiom, $langFile);
             if (file_exists($file)) {
                 $found = TRUE;
-                $ret = include $basepath;
+                $ret = require $file;
                 if ($ret) {
                     $lang = array_merge($lang, $ret);
                 }
@@ -69,17 +68,17 @@ class Language {
         }        
 
         if (! $found) {
-            throw new \Exception('Unable to load the requested language file: language/' . $idiom . '/' . $langfile);
+            throw new \Exception('Unable to load the requested language file: language/' . $idiom . '/' . $langFile);
         }
 
         if (! $lang) {
-            Logger::error('Language file contains no data: language/' . $idiom . '/' . $langfile);
+            Logger::error('Language file contains no data: language/' . $idiom . '/' . $langFile);
         }
 
-        $this->isLoaded[$langfile] = $idiom;
+        $this->isLoaded[$langFile] = $idiom;
         $this->language = array_merge($this->language, $lang);
 
-        Logger::debug('Language file loaded: language/{}/{}', $idiom, $langfile);
+        Logger::debug('Language file loaded: language/{}/{}', $idiom, $langFile);
         return $this;
     }
 
