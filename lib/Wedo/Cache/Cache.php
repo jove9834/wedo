@@ -48,8 +48,8 @@ class Cache {
     /**
      * 清除系统缓存
      *
-     * @param   string  $name   缓存名称
-     * @return  void
+     * @param string $id 缓存名称
+     * @return boolean
      */
     public static function delete($id) {
         if (self::isSupported() === FALSE) {
@@ -60,7 +60,13 @@ class Cache {
         return self::$_cache->delete($id);
     }
 
-    public static function clean($type=FALSE)
+    /**
+     * 清除缓存
+     *
+     * @param string $type 类型
+     * @return boolean
+     */
+    public static function clean($type = NULL)
     {
         if (self::isSupported() === FALSE) {
             return FALSE;
@@ -74,21 +80,21 @@ class Cache {
             foreach ($cache_array as $key => $value) {
                 Logger::debug('dcache clean key['.$key.'] and type['.$type.']');
                 if( substr($key, 0, $len) == $type ) {
-                    $this->delete($key);
+                    self::delete($key);
                 }
             }
-        }
-        else 
-        {
-            self::$_cache->clean(); // memcached缓存
+
+            return TRUE;
+        } else {
+            return self::$_cache->clean(); // memcached缓存
         }
     }
 
     /**
      * 临时数据缓存读取
      *
-     * @param   string  $name   缓存名称
-     * @return  array
+     * @param string $id 缓存名称
+     * @return array|boolean
      */
     public static function get($id) {
         if (! $id){
@@ -111,10 +117,10 @@ class Cache {
     /**
      * 临时数据缓存
      *
-     * @param   string  $id 缓存名称
-     * @param   array   $data   缓存数据
-     * @param   intval  $ttl    时间（秒）
-     * @return  bool
+     * @param string  $id   缓存名称
+     * @param mixed   $data 缓存数据
+     * @param integer $ttl  时间（秒）
+     * @return bool
      */
     public static function set($id, $data, $ttl = 0) {
     

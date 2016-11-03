@@ -10,6 +10,7 @@
 namespace Apps\Sys\Entity;
 
 use Apps\Sys\Models\UserModel;
+use Apps\Sys\Service\UserService;
 use Wedo\Database\Entity;
 
 /**
@@ -169,8 +170,13 @@ class User extends Entity {
         $this->addCondition('create_at', $adj);
     }
 
-    public function getIsDel() {
-        return $this->isDel;
+    /**
+     * 是否已删除
+     *
+     * @return boolean
+     */
+    public function isDel() {
+        return $this->isDel == 1;
     }
 
     /**
@@ -182,8 +188,14 @@ class User extends Entity {
         $this->isDel = $isDel ? 1 : 0;
         $this->addCondition('isDel', $adj);
     }
-    public function getIsActive() {
-        return $this->isActive;
+
+    /**
+     * 是否已激活
+     *
+     * @return boolean
+     */
+    public function isActive() {
+        return $this->isActive == 1;
     }
 
     /**
@@ -210,8 +222,12 @@ class User extends Entity {
         $this->addCondition('avatar', $adj);
     }
 
+    /**
+     * 获取用户的登录帐号列表
+     *
+     * @return mixed
+     */
     public function getAccounts() {
-        // @TODO: 取登录帐号列表，即sys_user_account_index
         return UserModel::instance()->getAccounts($this->uid);
     }
 
@@ -225,17 +241,8 @@ class User extends Entity {
             throw new \Exception("密码不能为空");
         }
 
-        $this->salt || $this->generateSalt();
-        // @TODO: 调用统一的加密接口
-    }
-
-    /**
-     * 生成随机的加密代码.
-     *
-     * @param int $len 长度
-     */
-    public function generateSalt($len = 6) {
-        $this->salt = substr(md5(uniqid(rand(), true)), 0, $len);
+        $this->salt || $this->salt = UserService::generateSalt();
+        $this->password = UserService::hashPassword($this->password, $this->salt);
     }
 
 }

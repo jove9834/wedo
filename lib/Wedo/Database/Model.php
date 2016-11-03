@@ -11,12 +11,14 @@ namespace Wedo\Database;
 
 use Exception;
 use Wedo\Config;
+use Wedo\InstanceTrait;
 use Wedo\Logger;
 
 /**
  * 数据访问对象基类
  */
 class Model {
+    use InstanceTrait;
     /**
      * 数据库连接实例
      *
@@ -64,7 +66,7 @@ class Model {
      *
      * @var Model
      */
-    private static $_models = array();
+//    private static $_models = array();
 
     /**
      * 表名前缀
@@ -86,14 +88,14 @@ class Model {
      *
      * @return Model
      */
-    public static function instance() {
-        $c = get_called_class();
-        if (! isset(self::$_models[$c])) {
-            self::$_models[$c] = new static;
-        }
-
-        return self::$_models[$c];
-    }
+//    public static function instance() {
+//        $c = get_called_class();
+//        if (! isset(self::$_models[$c])) {
+//            self::$_models[$c] = new static;
+//        }
+//
+//        return self::$_models[$c];
+//    }
 
     /**
      * 取数据库连接
