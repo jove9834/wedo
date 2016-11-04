@@ -146,6 +146,12 @@ class Application
     {
         $this->init();
         $args = array_slice($_SERVER['argv'], 1);
+        if (! $args) {
+            echo "usage: php test.php TestCaseClass [...]" . PHP_EOL;
+            echo 'e.g.: php test.php Apps\Sys\Test\UserServiceTest';
+            exit;
+        }
+
         foreach ($args as $val) {
             if (! $val) {
                 continue;
@@ -161,8 +167,10 @@ class Application
                 $test->run($val);
             } catch (\Wedo\Exception\ClassNotFoundException $e) {
                 Logger::error('测试类不存在：' . $e->getMessage());
+                echo 'Error:' . $val . ' class not found!';
             } catch (\Exception $e) {
                 Logger::error($e->getMessage());
+                echo 'Error:' . $e->getMessage();
             }
         }
     }
