@@ -163,8 +163,7 @@ class UserService
         // 取得cacheKey
         $data = Cache::get(self::getCookieCode());
         if ($data) {
-            $user = json_decode($data);
-            return $user;
+            return User::fromJson($data);
         }
         else {
             // self::destorySession();
@@ -206,7 +205,7 @@ class UserService
             throw new \Exception(lang('帐号已存在'), 2);
         }
 
-        $info == NULL && $info = new User();
+        $info == NULL && $info = User::create();
         $info->setPassword($password);
         $info->setCreateAt(time());
         // 对密码进行加密
@@ -217,9 +216,17 @@ class UserService
             return FALSE;
         }
 
-        // 写日志
-        LogService::writeLog('create_account', '创建帐号', $uid);
-        return TRUE;
+        // 添加帐号
+        try {
+            UserModel::instance()->addAccount($uid, $account, $type);
+            // 写日志
+            LogService::writeLog('create_account', '创建帐号', $uid);
+            return TRUE;
+        } catch (\Exception $e) {
+            LogService::writeLog('create_account', wd_print('创建帐号出现异常， 异常信息：{}', $e->getMessage()), $uid);
+        }
+
+        return FALSE;
     }
 
     /**
@@ -258,8 +265,7 @@ class UserService
      */
     private static function saveSession($cookieCode, User $user) {
         self::$loginUid = $user->getUid();
-        $data = json_encode($user, JSON_UNESCAPED_UNICODE);
-        Cache::set($cookieCode, $data, self::CACHE_EXPIRE);
+        Cache::set($cookieCode, $user->toJson(TRUE), self::CACHE_EXPIRE);
     }
 
     /**

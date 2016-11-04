@@ -10,6 +10,7 @@
 namespace Apps\Sys\Models;
 
 use Apps\Sys\Entity\User;
+use Apps\Sys\Entity\UserAccountIndex;
 use Common\BaseModel;
 
 /**
@@ -100,6 +101,21 @@ class UserModel extends BaseModel {
         // 对密码进行加密
         $user->hashPassword();
         return $this->updateEntity($user);
+    }
+
+    /**
+     * @param integer $uid     用户ID
+     * @param string  $account 帐号名称
+     * @param integer $type    类型
+     * @return int
+     * @throws \Exception
+     */
+    public function addAccount($uid, $account, $type) {
+        if (! $uid || ! $this->exists($uid)) {
+            throw new \Exception("用户不存在!");
+        }
+
+        return UserAccountIndexModel::instance()->addAccount($uid, $account, $type);
     }
 
 }

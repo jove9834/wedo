@@ -161,6 +161,8 @@ class Application
                 $test->run($val);
             } catch (\Wedo\Exception\ClassNotFoundException $e) {
                 Logger::error('测试类不存在：' . $e->getMessage());
+            } catch (\Exception $e) {
+                Logger::error($e->getMessage());
             }
         }
     }

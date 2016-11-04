@@ -244,7 +244,7 @@ class Model {
         $this->beforeInsert($data);
         $query = $this->createQuery();
         $result = $query->insert($data);
-        Logger::debug('data:{}', json_encode($data));
+//        Logger::debug('data:{}', json_encode($data));
         if ($result) {
             if (! is_array($this->primaryKey)) {
                 $id = wd_array_val($data, $this->primaryKey);

@@ -74,11 +74,12 @@ class UserAccountIndex extends Entity {
     /**
      * @param  mixed $account
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setAccount($account, $adj = NULL) {
         $this->account = $account;
         $this->addCondition('account', $adj);
+        return $this;
     }
     public function getType() {
         return $this->type;
@@ -87,11 +88,12 @@ class UserAccountIndex extends Entity {
     /**
      * @param  mixed $type
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setType($type, $adj = NULL) {
         $this->type = $type;
         $this->addCondition('type', $adj);
+        return $this;
     }
     public function getUid() {
         return $this->uid;
@@ -100,11 +102,12 @@ class UserAccountIndex extends Entity {
     /**
      * @param  mixed $uid
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setUid($uid, $adj = NULL) {
         $this->uid = $uid;
         $this->addCondition('uid', $adj);
+        return $this;
     }
 
 }
