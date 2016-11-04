@@ -168,8 +168,9 @@ class Logger {
         if(is_array($msg)) {
             // $msg = json_encode($msg, JSON_UNESCAPED_UNICODE);
             $msg = print_r($msg, TRUE);
-        }
-        else {
+        } elseif (is_object($msg)) {
+            $msg = var_export($msg, TRUE);
+        } else {
             $msg = parse_string($msg, $params);
         }
 
