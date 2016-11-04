@@ -58,7 +58,7 @@ class Assets {
      */
     public static function img($file, $module = NULL) {
         if (! $module) {
-            $module = Dispatcher::getInstance()->getRequest()->getModule();
+            $module = Dispatcher::instance()->getRequest()->getModule();
         }
         
         $uri = 'cache/' . $module .'/img/' . $file;
@@ -77,10 +77,10 @@ class Assets {
         $fs = new Filesystem();        
 
         if (! $module) {
-            $module = Dispatcher::getInstance()->getRequest()->getModule();
+            $module = Dispatcher::instance()->getRequest()->getModule();
         }
 
-        $modulePath = Dispatcher::getInstance()->getModulePath($module);
+        $modulePath = Dispatcher::instance()->getModulePath($module);
 
         $result = array();
         if (! is_array($file)) {

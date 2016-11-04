@@ -134,7 +134,7 @@ class Application
         // 初始化
         $this->init();
         // 解析请求
-        Dispatcher::getInstance()->dispatch(new Request());
+        Dispatcher::instance()->dispatch(new Request());
     }
 
     /**
@@ -200,7 +200,7 @@ class Application
         $fs = new \Wedo\Filesystem();
         $directories = $fs->directories($this->_app_directory);
         if (! $directories) {
-            throw new \Exception(wd_print("{}目录下没有默认的模块{}", $this->_app_directory, Dispatcher::getInstance()->getDefaultModule()));
+            throw new \Exception(wd_print("{}目录下没有默认的模块{}", $this->_app_directory, Dispatcher::instance()->getDefaultModule()));
         }
 
         foreach ($directories as $dir) {
@@ -236,6 +236,7 @@ class Application
             'Language' => __DIR__ . '/Language.php',
             'helpers' => __DIR__ . '/Support/helpers.php',
             'Config' => __DIR__ . '/Config.php',
+            'InstanceTrait' => __DIR__ . '/InstanceTrait.php',
             'Logger' => __DIR__ . '/Logger.php',
         );
     }
@@ -295,7 +296,7 @@ class Application
      */
     public function getDispatcher()
     {
-        return Dispatcher::getInstance();
+        return Dispatcher::instance();
     }
 
     /**

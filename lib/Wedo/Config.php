@@ -41,7 +41,7 @@ class Config {
     public static function load($file, $module = NULL, $return = FALSE) {
         $file = str_replace(self::$file_ext, '', $file);
         $file_name = $file . self::$file_ext;
-        $config_path = ($module ? Dispatcher::getInstance()->getModulePath($module) . $module : BASE_PATH) .'/config/';
+        $config_path = ($module ? Dispatcher::instance()->getModulePath($module) . $module : BASE_PATH) .'/config/';
 
         $file_path = $config_path . $file_name;
         $md5_key = md5($file_path);

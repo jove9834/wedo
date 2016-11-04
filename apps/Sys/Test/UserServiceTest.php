@@ -26,13 +26,13 @@ class UserServiceTest  extends TestCase
     /**
      * 登录测试
      */
-//    public function testingLogin() {
-//        $loginUser = UserService::login('admin', '88888');
-//        Logger::debug(json_encode($loginUser));
-//    }
+    public function testingLogin() {
+        $loginUser = UserService::login('admin', '88888');
+        Logger::debug(json_encode($loginUser));
+    }
 
     public function testingEntity() {
-        $user = new User();
+        $user = User::create();
         $user->setUid(1);
         $user->setName('admin');
         $s = $user->toJson(TRUE);

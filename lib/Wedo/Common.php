@@ -203,7 +203,7 @@ function wd_json_decode($str) {
  * @return Ambigous <string, mixed>
  */
 function wd_input($key = NULL, $default = FALSE) {
-    $request = Wedo\Dispatcher::getInstance()->getRequest();
+    $request = Wedo\Dispatcher::instance()->getRequest();
     if ($key) {
         $result = $request->getQuery($key) ?: $request->getPost($key);
     }
@@ -371,20 +371,20 @@ if ( ! function_exists('recursionTree'))
  * @return string
  */
 function wd_url($c, $a = NULL, array $q = NULL, $m = NULL) {
-    $request = Wedo\Dispatcher::getInstance()->getRequest();
+    $request = Wedo\Dispatcher::instance()->getRequest();
     if (! $m) {
         $m = $request->getModule();
     }
 
     if (! $a) {
-        $a = Wedo\Dispatcher::getInstance()->getDefaultAction();
+        $a = Wedo\Dispatcher::instance()->getDefaultAction();
     }
 
     if (! $q) {
         $q = array();
     }
 
-    $router = Wedo\Dispatcher::getInstance()->getRouter();
+    $router = Wedo\Dispatcher::instance()->getRouter();
     $info = array(':m' => $m, ':c' => $c, ':a' => $a);
     $siteUri = $request->getBaseUri();
     if ($siteUri) {
@@ -405,7 +405,7 @@ function wd_url($c, $a = NULL, array $q = NULL, $m = NULL) {
  * @return string
  */
 function wd_controller_url($a = NULL, array $q = NULL) {
-    $request = Wedo\Dispatcher::getInstance()->getRequest();
+    $request = Wedo\Dispatcher::instance()->getRequest();
     $c = $request->getController();
     return wd_url($c, $a, $q);
 }
@@ -418,7 +418,7 @@ function wd_controller_url($a = NULL, array $q = NULL) {
  **/
 function current_url()
 {
-    $request = Wedo\Dispatcher::getInstance()->getRequest();
+    $request = Wedo\Dispatcher::instance()->getRequest();
 
     return controller_url($request->getMethod());
 }
@@ -491,7 +491,7 @@ function template_url($uri) {
 }
 
 function base_url($uri = '') {
-    $baseUri = Wedo\Dispatcher::getInstance()->getRequest()->getBaseUri();
+    $baseUri = Wedo\Dispatcher::instance()->getRequest()->getBaseUri();
     if ($uri) {
         return rtrim($baseUri, '/') . '/' . ltrim($uri, '/');
     }
@@ -612,7 +612,7 @@ function wd_mkdirs($dir) {
  * @return string
  */
 function loadJs($file, $module = NULL) {
-    $request = Wedo\Dispatcher::getInstance()->getRequest();
+    $request = Wedo\Dispatcher::instance()->getRequest();
     if (! $module) {
         $module = $request->getModule();
     }
@@ -632,7 +632,7 @@ function loadJs($file, $module = NULL) {
  * @return string
  */
 function ip_address() {
-    $request = Wedo\Dispatcher::getInstance()->getRequest();
+    $request = Wedo\Dispatcher::instance()->getRequest();
     if (! $request) {
         return '0.0.0.0';
     }

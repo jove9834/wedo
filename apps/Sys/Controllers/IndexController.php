@@ -8,7 +8,7 @@ use Common\Models\ModuleModel;
 
 class IndexController extends Controller {
     public function indexAction() {
-        echo Dispatcher::getInstance()->getControllerClass(Dispatcher::getInstance()->getRequest());
+        echo Dispatcher::instance()->getControllerClass(Dispatcher::instance()->getRequest());
         // $this->display();
         $module = ModuleModel::instance()->get('sys')->entity();
         var_dump($module);

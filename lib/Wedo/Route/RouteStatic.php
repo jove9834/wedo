@@ -26,9 +26,9 @@ class RouteStatic implements RouteInterface {
      * @return string
      */
     public function assemble(array $info, array $query = NULL) {
-        $module = wd_array_val($info, ':m', Dispatcher::getInstance()->getDefaultModule());
-        $controller = wd_array_val($info, ':c', Dispatcher::getInstance()->getDefaultController());
-        $action = wd_array_val($info, ':a', Dispatcher::getInstance()->getDefaultAction());
+        $module = wd_array_val($info, ':m', Dispatcher::instance()->getDefaultModule());
+        $controller = wd_array_val($info, ':c', Dispatcher::instance()->getDefaultController());
+        $action = wd_array_val($info, ':a', Dispatcher::instance()->getDefaultAction());
         $params = wd_array_val($info, ':p');
 
         $url = '/' . $module . '/' . $controller  . '/' . $action;

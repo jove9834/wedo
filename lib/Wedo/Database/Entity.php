@@ -35,6 +35,15 @@ class Entity {
     protected $_conditions = array();
 
     /**
+     * 创建实体对象
+     *
+     * @return static
+     */
+    public static function create() {
+        return new static();
+    }
+
+    /**
      * 魔术方法，设置属性值
      *
      * @param string $name  属性名称
@@ -62,16 +71,36 @@ class Entity {
         return $this->$name;     
     }
 
+    /**
+     * 添加查询条件
+     *
+     * @param string $fieldName 作为条件的字段名称
+     * @param string $sysadj 条件修饰符
+     * @return $this
+     */
     public function addCondition($fieldName, $sysadj = 'EQ') {
         $this->_conditions[$fieldName] = $sysadj;
+        return $this;
     }
 
+    /**
+     * 取查询条件的条件修饰符
+     *
+     * @param string $fieldName 字段名称
+     * @return string
+     */
     public function getConditionAdj($fieldName) {
         return wd_array_val($this->_conditions, $fieldName, 'EQ');
     }
 
+    /**
+     * 删除条件
+     * @param string $fieldName 字段名称
+     * @return $this
+     */
     public function removeCondition($fieldName) {
         unset($this->_conditions[$fieldName]);
+        return $this;
     }
 
     /**

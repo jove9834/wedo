@@ -41,7 +41,7 @@ class BaseController extends Controller {
         
         // 定义操作编号
         if (!defined('WD_OPERATE_NO')) {
-            define('WD_OPERATE_NO', Dispatcher::getInstance()->getRequest()->getUUID());
+            define('WD_OPERATE_NO', Dispatcher::instance()->getRequest()->getUUID());
         }
         
         parent::__construct();
@@ -74,7 +74,7 @@ class BaseController extends Controller {
      */
     protected function initUserEnvironment() {
         // 当前请求功能名称
-        $request = Dispatcher::getInstance()->getRequest();
+        $request = Dispatcher::instance()->getRequest();
         $m = $request->getModule();
         $c = $request->getController();
 
@@ -191,11 +191,11 @@ class BaseController extends Controller {
      * @return string
      */
     protected function getCurrentFunctionUrl() {
-        $request = Dispatcher::getInstance()->getRequest();
+        $request = Dispatcher::instance()->getRequest();
         $m = $request->getModule();
         $c = $request->getController();
         
-        $router = Dispatcher::getInstance()->getRouter();
+        $router = Dispatcher::instance()->getRouter();
         $info = array(':m' => $m, ':c' => $c);
         
         return $router->getCurrentRoute()->assemble($info);

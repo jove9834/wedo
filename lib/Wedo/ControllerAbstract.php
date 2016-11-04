@@ -70,13 +70,13 @@ class ControllerAbstract
      * @return string
      */
     protected function render($tpl = NULL, array $tpl_vars = NULL) {
-        $module_view_path = Dispatcher::getInstance()->getModulePath($this->getModule()) . '/views';
+        $module_view_path = Dispatcher::instance()->getModulePath($this->getModule()) . '/views';
 
         $this->setViewPath($module_view_path);
         $_view = $this->getView();
         if (! $_view) {
             $_view = new ViewBlade();
-            Dispatcher::getInstance()->setView($_view);
+            Dispatcher::instance()->setView($_view);
         }
 
         $_view->addLocation($this->_view_path);
@@ -110,7 +110,7 @@ class ControllerAbstract
      * @return Request
      */
     public function getRequest() {
-        return Dispatcher::getInstance()->getRequest();
+        return Dispatcher::instance()->getRequest();
     }
 
     /**
@@ -119,7 +119,7 @@ class ControllerAbstract
      * @return ViewInterface
      */
     public function getView() {
-        return Dispatcher::getInstance()->getView();
+        return Dispatcher::instance()->getView();
     }
 
     /**
@@ -159,9 +159,9 @@ class ControllerAbstract
      */
     public function forward($module, $controller = NULL, $action = NULL, array $query = NULL) {
         $info = array(':m' => $module, ':c' => $controller, ':a' => $action);
-        $uri = Dispatcher::getInstance()->getRouter()->getCurrentRoute()->assemble($info, $query);
+        $uri = Dispatcher::instance()->getRouter()->getCurrentRoute()->assemble($info, $query);
         $request = $this->getRequest();
         $request->setRequestUri($uri);
-        Dispatcher::getInstance()->dispatch($request);
+        Dispatcher::instance()->dispatch($request);
     }
 }

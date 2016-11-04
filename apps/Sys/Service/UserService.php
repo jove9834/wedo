@@ -89,13 +89,11 @@ class UserService
             throw new \Exception(lang('登录出错次数超过5次，帐号已被锁定'), 5);
         }
 
-        $ip_address = ip_address_pton();
-
         $user = UserModel::instance()->getUserByAccount($account);
         if (! $user) {
             // 帐号不存在
             $msg = lang('帐号不存在');
-            LogService::writeLog(CURRENT_FUNCTION, 'login', wd_print('error:{}, account:{}, IP:{}', $msg, $account, $ip_address));
+            LogService::writeLog('login', wd_print('error:{}, account:{}', $msg, $account));
             throw new \Exception(lang('帐号或密码不正确'), 2);
         }
 
@@ -106,7 +104,7 @@ class UserService
             // 密码不正确
             self::increaseLoginAttempts($account);
             $msg = lang('密码不正确');
-            LogService::writeLog(CURRENT_FUNCTION, 'login', wd_print('error:{}, account:{}, IP:{}', $msg, $account, $ip_address));
+            LogService::writeLog('login', wd_print('error:{}, account:{}', $msg, $account));
             throw new \Exception(lang('帐号或密码不正确'), 2);
         }
 
@@ -125,7 +123,7 @@ class UserService
         self::saveSession(self::getCookieCode(), $user);
 
         // 写日志
-        LogService::writeLog(CURRENT_FUNCTION, 'login', $account, $user->getUid());
+        LogService::writeLog('login', $account, $user->getUid());
         // 清除登录尝试记录
         self::clearLoginAttempts($account);
         return $user;
@@ -141,7 +139,7 @@ class UserService
         self::destorySession();
         if ($user) {
             // 写日志
-            LogService::writeLog(CURRENT_FUNCTION, 'logout', NULL, $user['uid']);
+            LogService::writeLog('logout', NULL, $user->getUid());
         }
     }
 
@@ -219,8 +217,8 @@ class UserService
             return FALSE;
         }
 
-        // TODO 当前请求序列号 写日志
-        LogService::writeLog(CURRENT_FUNCTION, 'create_account', '新建帐号', $uid);
+        // 写日志
+        LogService::writeLog('create_account', '创建帐号', $uid);
         return TRUE;
     }
 

@@ -8,20 +8,40 @@
  * @since          Version 1.0
  */
 namespace Apps\Sys\Service;
+use Apps\Sys\Entity\Log;
 use Apps\Sys\Models\LogModel;
+use Wedo\Dispatcher;
 
 class LogService
 {
     /**
      * 添加操作日志
      *
-     * @param string $function_name 页面名称
-     * @param string $operate_type  操作类型
-     * @param string $uid           操作人ID
-     * @param string $memo          操作说明
+     * @param string  $logKey      日志Key
+     * @param string  $description 操作描述
+     * @param integer $uid         操作人ID
      * @return mixed
      */
-    public static function writeLog($function_name, $operate_type, $memo = NULL, $uid = FALSE) {
-        return LogModel::instance()->writeLog($function_name, $operate_type, $memo, $uid);
+    public static function writeLog($logKey, $description = NULL, $uid = NULL) {
+        $uid = $uid ? $uid : UserService::getLoginUid();
+        $log = Log::create();
+        $log->setLogKey($logKey);
+        $log->setDescription($description);
+        $log->setUid($uid ? $uid : 0);
+        $log->setIpAddress(ip_address_pton());
+        $log->setCreateAt(time());
+
+        $request = Dispatcher::instance()->getRequest();
+        if ($request) {
+            $log->setRequestUuid($request->getUUID());
+            $browser = $request->getBrowser();
+            if ($browser) {
+                $log->setBrowserType($browser->getName() . ' ' . $browser->getVersion());
+                $log->setOs($browser->getPlatform());
+                $log->setDevice($browser->getDevice());
+            }
+        }
+
+        return LogModel::instance()->addEntity($log);
     }
 }

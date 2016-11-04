@@ -17,6 +17,7 @@ use Wedo\Exception\CHttpException;
  * 分发，初始化运行环境
  */
 class Dispatcher {
+    use InstanceTrait;
     /**
      * 路由实例
      *
@@ -38,12 +39,6 @@ class Dispatcher {
      */
     protected $_request;
 
-    /**
-     * 单例模式
-     *
-     * @var Dispatcher
-     */
-    protected static $_instance;
     /**
      * 是否返回响应内容
      *
@@ -83,19 +78,6 @@ class Dispatcher {
      */
     public function __construct() {
         $this->_router = new Router();
-    }
-
-    /**
-     * 单例模式
-     *
-     * @return Dispatcher
-     */
-    public static function getInstance() {
-        if (! self::$_instance) {
-            self::$_instance = new Dispatcher();
-        }
-
-        return self::$_instance;
     }
 
     /**

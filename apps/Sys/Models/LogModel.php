@@ -56,7 +56,7 @@ class LogModel extends BaseModel {
      **/
     public function writeLog($log_type, $operate_type, $description, $module = FALSE, $operator = FALSE) {
         $ip_address = ip_address_pton();
-        $request = Dispatcher::getInstance()->getRequest();
+        $request = Dispatcher::instance()->getRequest();
         $serialVersionUID = defined('WD_OPERATE_NO') ? WD_OPERATE_NO : NULL;
         $operator = $operator ?: (defined('LOGIN_UID') ? LOGIN_UID : 0);
         $browserType = '';

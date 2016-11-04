@@ -75,12 +75,12 @@ class GenController extends Controller {
 
         $entityNs = $ns . "\\Entity";
         $vars = array('tableName' => $table, 'entityName' => $entityName, 'conn' => $conn, 'ns' => $entityNs, 'pk' => $pk, 'fields' => $fileds);
-        $entityContent = Dispatcher::getInstance()->getView()->render('Apps\Sys::gen.entity', $vars);
+        $entityContent = Dispatcher::instance()->getView()->render('Apps\Sys::gen.entity', $vars);
         $entityFile = $this->save($entityName, $entityNs, $entityContent);
         // 生成模型文件
         $modelNs = $ns . "\\Models";
         $vars = array('tableName' => $table, 'entityName' => $entityName, 'conn' => $conn, 'ns' => $ns, 'pk' => $pk, 'fields' => $fileds);
-        $content = Dispatcher::getInstance()->getView()->render('Apps\Sys::gen.model', $vars);
+        $content = Dispatcher::instance()->getView()->render('Apps\Sys::gen.model', $vars);
         $modelFile = $this->save($entityName . 'Model', $modelNs, $content);
         echo wd_print('Entity file:{} <br>Model file: {}<br>', $entityFile, $modelFile);
     }
