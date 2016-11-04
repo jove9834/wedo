@@ -40,6 +40,7 @@ class UserServiceTest  extends TestCase
 
         // 转换为实体
         $user1 = User::fromJson($s);
+        Logger::debug($user1);
 
     }
 }
