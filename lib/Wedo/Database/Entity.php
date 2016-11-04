@@ -74,8 +74,12 @@ class Entity {
         unset($this->_conditions[$fieldName]);
     }
 
-
-
+    /**
+     * 将实体对象转换为数组
+     *
+     * @param boolean $filterNull 是否过滤空属性
+     * @return array
+     */
     public function toArray($filterNull = FALSE) {
         $vars = get_object_vars($this);
         $data = array();
@@ -96,13 +100,48 @@ class Entity {
         return $data;
     }
 
-    public function fromArray($arr) {
-        foreach ($arr as $key => $value) {
-            $name = wd_camel_case($key);
-            $this->$name = $value;
+    /**
+     * 数组转换为实体对象
+     *
+     * @param array $arr 数组
+     * @return $this
+     */
+    public static function fromArray(array $arr) {
+        if (! $arr) {
+            return NULL;
         }
 
-        return $this;
+        $entity = new static();
+        foreach ($arr as $key => $value) {
+            $name = wd_camel_case($key);
+            $entity->$name = $value;
+        }
+
+        return $entity;
+    }
+
+    /**
+     * 将对象转换为JSON格式字符串
+     *
+     * @param boolean $filterNull 是否过滤空属性
+     * @return string
+     */
+    public function toJson($filterNull = FALSE) {
+        return json_encode($this->toArray($filterNull), JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * JSON字符串转换为实体对象
+     *
+     * @param string $json
+     * @return null|$this
+     */
+    public static function fromJson($json) {
+        if (! $json) {
+            return NULL;
+        }
+
+        return static::fromArray(json_decode($json, TRUE));
     }
 
     /**

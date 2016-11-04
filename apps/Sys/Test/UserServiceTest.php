@@ -9,6 +9,7 @@
 namespace Apps\Sys\Test;
 
 
+use Apps\Sys\Entity\User;
 use Apps\Sys\Service\UserService;
 use Wedo\Logger;
 use Wedo\TestCase;
@@ -25,8 +26,20 @@ class UserServiceTest  extends TestCase
     /**
      * 登录测试
      */
-    public function testingLogin() {
-        $loginUser = UserService::login('admin', '88888');
-        Logger::debug(json_encode($loginUser));
+//    public function testingLogin() {
+//        $loginUser = UserService::login('admin', '88888');
+//        Logger::debug(json_encode($loginUser));
+//    }
+
+    public function testingEntity() {
+        $user = new User();
+        $user->setUid(1);
+        $user->setName('admin');
+        $s = $user->toJson(TRUE);
+        Logger::debug($s);
+
+        // 转换为实体
+        $user1 = User::fromJson($s);
+
     }
 }
