@@ -13,7 +13,7 @@ namespace Wedo;
  * 日志类
  */
 class Logger {
-
+    use InstanceTrait;
     /**
      * Format of timestamp for log files
      *
@@ -42,12 +42,6 @@ class Logger {
      */
     protected $path = NULL;
 
-    /**
-     * 单例模式
-     *
-     * @var Log
-     */
-    private static $_instance;
 
     /**
      * 构造函数
@@ -66,18 +60,6 @@ class Logger {
         wd_mkdirs($this->path);
     }
 
-    /**
-     * 单例模式
-     *
-     * @return Logger
-     */
-    public static function getInstance() {
-        if (! self::$_instance) {
-            self::$_instance = new Logger();
-        }
-
-        return self::$_instance;
-    }
 
     /**
      * 写调试日志
@@ -97,7 +79,7 @@ class Logger {
             $params = array();
         }
 
-        return Logger::getInstance()->write('debug', $msg, $params);
+        return Logger::instance()->write('debug', $msg, $params);
     }
 
     /**
@@ -115,7 +97,7 @@ class Logger {
             $params = array();
         }
 
-        return Logger::getInstance()->write('error', $msg, $params);
+        return Logger::instance()->write('error', $msg, $params);
     }
 
     /**
@@ -133,7 +115,7 @@ class Logger {
             $params = array();
         }
 
-        return Logger::getInstance()->write('info', $msg, $params);
+        return Logger::instance()->write('info', $msg, $params);
     }
     
     /**
@@ -147,10 +129,11 @@ class Logger {
      * @return  bool
      */
     private function write($level, $msg, array $params = array()) {
+        $result = FALSE;
         $level = strtoupper($level);
         $iLevel = isset(self::$ENUM_LEVEL[$level]) ? self::$ENUM_LEVEL[$level] : 1;
         if ($this->level === 0 || $iLevel < $this->level) {
-            return ;
+            return $result;
         }
 
         $path = rtrim($this->path, '/') . '/';
@@ -162,7 +145,7 @@ class Logger {
         }
 
         if (! $fp = fopen($filepath, 'ab')) {
-            return FALSE;
+            return $result;
         }
 
         if(is_array($msg)) {
