@@ -27,11 +27,12 @@ class UserProfile extends Entity {
     /**
      * @param  mixed $id
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return $this
      */
     public function setId($id, $adj = NULL) {
         $this->id = $id;
         $this->addCondition('id', $adj);
+        return $this;
     }
     public function getUid() {
         return $this->uid;
@@ -40,37 +41,50 @@ class UserProfile extends Entity {
     /**
      * @param  mixed $uid
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return $this
      */
     public function setUid($uid, $adj = NULL) {
         $this->uid = $uid;
         $this->addCondition('uid', $adj);
+        return $this;
     }
     public function getName() {
         return $this->name;
     }
 
     /**
-     * @param  mixed $name
-     * @param  string $adj 条件修饰符
-     * @return  void
+     * setName
+     *
+     * @param string $name 名称
+     * @param string $adj  条件修饰符
+     * @return $this
      */
     public function setName($name, $adj = NULL) {
         $this->name = $name;
         $this->addCondition('name', $adj);
+        return $this;
     }
+
+    /**
+     * getValue
+     *
+     * @return mixed
+     */
     public function getValue() {
         return $this->value;
     }
 
     /**
-     * @param  mixed $value
-     * @param  string $adj 条件修饰符
-     * @return  void
+     * setValue
+     *
+     * @param mixed  $value 属性值
+     * @param string $adj   条件修饰符
+     * @return $this
      */
     public function setValue($value, $adj = NULL) {
         $this->value = $value;
         $this->addCondition('value', $adj);
+        return $this;
     }
 
 }

@@ -157,6 +157,8 @@ class Application
                 continue;
             }
 
+            $val = str_replace(".", "\\", $val);
+
             Logger::debug('arg : {}', $val);
             try {
                 $test = new $val();    

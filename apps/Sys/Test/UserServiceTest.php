@@ -48,6 +48,15 @@ class UserServiceTest  extends TestCase
         }
     }
 
+    public function testingUpdatePassword() {
+        try {
+            UserService::updatePassword(1, '111111');
+            $this->assertTrue(TRUE);
+        } catch (\Exception $e) {
+            $this->assertTrue(FALSE);
+        }
+    }
+
     public function testingEntity() {
         $user = User::create();
         $user->setUid(1);
