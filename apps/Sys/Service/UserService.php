@@ -8,6 +8,7 @@
  * @since          Version 1.0
  */
 namespace Apps\Sys\Service;
+use Apps\Sys\Entity\LoginUser;
 use Apps\Sys\Entity\User;
 use Apps\Sys\Entity\UserAccountIndex;
 use Apps\Sys\Models\UserAccountIndexModel;
@@ -86,7 +87,7 @@ class UserService
 
         if(static::isTimeLocked($account)) {
             // 帐号登录出错次数超过最大次数，被锁定
-            throw new \Exception(lang('登录出错次数超过5次，帐号已被锁定'), 5);
+            throw new \Exception(wd_print(lang('登录出错次数超过{}次，帐号已被锁定'), self::MAXIMUM_LOGIN_ATTEMPTS), 5);
         }
 
         $user = UserModel::instance()->getUserByAccount($account);
@@ -119,8 +120,14 @@ class UserService
             throw new \Exception(lang('帐号未激活'), 4);
         }
 
+        $loginUser = LoginUser::create();
+        $loginUser->setUid($user->getUid());
+        $loginUser->setName($user->getName());
+        $loginUser->setGender($user->getGender());
+        $loginUser->setAvatar($user->getAvatar());
+
         // 生成CookieKey
-        self::saveSession(self::getCookieCode(), $user);
+        self::saveSession(self::getCookieCode(), $loginUser);
 
         // 写日志
         LogService::writeLog('login', $account, $user->getUid());
@@ -157,13 +164,13 @@ class UserService
     /**
      * 取登录用户信息
      *
-     * @return User|boolean
+     * @return LoginUser|boolean
      */
     public static function getLoginUser() {
         // 取得cacheKey
         $data = Cache::get(self::getCookieCode());
         if ($data) {
-            return User::fromJson($data);
+            return LoginUser::fromJson($data);
         }
         else {
             // self::destorySession();
@@ -259,11 +266,11 @@ class UserService
     /**
      * 保存登录状态至Session， 注意，这里的session可以是缓存如redis
      *
-     * @param string $cookieCode cookie代码
-     * @param User   $user       用户数据
+     * @param string    $cookieCode cookie代码
+     * @param LoginUser $user       用户数据
      * @return void
      */
-    private static function saveSession($cookieCode, User $user) {
+    private static function saveSession($cookieCode, LoginUser $user) {
         self::$loginUid = $user->getUid();
         Cache::set($cookieCode, $user->toJson(TRUE), self::CACHE_EXPIRE);
     }
@@ -354,8 +361,8 @@ class UserService
     private static function isTimeLocked($account) {
         // 取timelocked key
         $key = self::getTimelockedCacheKey($account);
-        $timelocked = Cache::get($key);
-        return $timelocked == 1;
+        $timeLocked = Cache::get($key);
+        return $timeLocked == 1;
     }
 
     /**
@@ -373,7 +380,7 @@ class UserService
         $attempts = Cache::get($key);
         $attempts = $attempts ? $attempts + 1 : 1;
         if ($attempts >= self::MAXIMUM_LOGIN_ATTEMPTS) {
-            // 超过次数，锁定
+            // 超过次数，锁定，锁定24小时
             Cache::set(self::getTimelockedCacheKey($account), 1, 86400);
             // 清除尝试记录
             self::clearLoginAttempts($account);
@@ -392,22 +399,6 @@ class UserService
     private static function clearLoginAttempts($account) {
         $key = self::getLoginAttemptCacheKey($account);
         Cache::delete($key);
-    }
-
-    /**
-     * 是否已超过最大登录尝试次数
-     *
-     * @param string $account 帐号
-     * @return boolean
-     */
-    private static function isMaxLoginAttemptsExceeded($account) {
-        if (self::MAXIMUM_LOGIN_ATTEMPTS > 0) {
-            $key = self::getLoginAttemptCacheKey($account);
-            $attempts = Cache::get($key);
-            return $attempts && $attempts >= self::MAXIMUM_LOGIN_ATTEMPTS;
-        }
-
-        return FALSE;
     }
 
     /**
