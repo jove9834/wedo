@@ -38,6 +38,7 @@ class LogData extends Entity {
     public function setId($id, $adj = NULL) {
         $this->id = $id;
         $this->addCondition('id', $adj);
+        return $this;
     }
     public function getRequestUuid() {
         return $this->requestUuid;
@@ -46,11 +47,12 @@ class LogData extends Entity {
     /**
      * @param  mixed $requestUuid
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setRequestUuid($requestUuid, $adj = NULL) {
         $this->requestUuid = $requestUuid;
         $this->addCondition('requestUuid', $adj);
+        return $this;
     }
     public function getConn() {
         return $this->conn;
@@ -59,11 +61,12 @@ class LogData extends Entity {
     /**
      * @param  mixed $conn
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setConn($conn, $adj = NULL) {
         $this->conn = $conn;
         $this->addCondition('conn', $adj);
+        return $this;
     }
     public function getTable() {
         return $this->table;
@@ -72,11 +75,12 @@ class LogData extends Entity {
     /**
      * @param  mixed $table
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return $this
      */
     public function setTable($table, $adj = NULL) {
         $this->table = $table;
         $this->addCondition('table', $adj);
+        return $this;
     }
     public function getPrimaryKey() {
         return $this->primaryKey;
@@ -85,11 +89,12 @@ class LogData extends Entity {
     /**
      * @param  mixed $primaryKey
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return $this
      */
     public function setPrimaryKey($primaryKey, $adj = NULL) {
         $this->primaryKey = $primaryKey;
         $this->addCondition('primaryKey', $adj);
+        return $this;
     }
     public function getOldData() {
         return $this->oldData;
@@ -98,11 +103,12 @@ class LogData extends Entity {
     /**
      * @param  mixed $oldData
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return $this
      */
     public function setOldData($oldData, $adj = NULL) {
         $this->oldData = $oldData;
         $this->addCondition('oldData', $adj);
+        return $this;
     }
     public function getUpdateData() {
         return $this->updateData;
@@ -111,11 +117,12 @@ class LogData extends Entity {
     /**
      * @param  mixed $updateData
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return $this
      */
     public function setUpdateData($updateData, $adj = NULL) {
         $this->updateData = $updateData;
         $this->addCondition('updateData', $adj);
+        return $this;
     }
     public function getCreateAt() {
         return $this->createAt;
@@ -124,11 +131,12 @@ class LogData extends Entity {
     /**
      * @param  mixed $createAt
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return $this
      */
     public function setCreateAt($createAt, $adj = NULL) {
         $this->createAt = $createAt;
         $this->addCondition('createAt', $adj);
+        return $this;
     }
     public function getOperateType() {
         return $this->operateType;
@@ -137,11 +145,12 @@ class LogData extends Entity {
     /**
      * @param  mixed $operateType
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return $this
      */
     public function setOperateType($operateType, $adj = NULL) {
         $this->operateType = $operateType;
         $this->addCondition('operateType', $adj);
+        return $this;
     }
     public function getUid() {
         return $this->uid;
@@ -150,11 +159,12 @@ class LogData extends Entity {
     /**
      * @param  mixed $uid
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return $this
      */
     public function setUid($uid, $adj = NULL) {
         $this->uid = $uid;
         $this->addCondition('uid', $adj);
+        return $this;
     }
 
 }

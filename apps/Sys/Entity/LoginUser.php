@@ -7,6 +7,7 @@
  */
 
 namespace Apps\Sys\Entity;
+use Wedo\Database\Entity;
 
 /**
  * Class LoginUser
@@ -15,7 +16,7 @@ namespace Apps\Sys\Entity;
  *
  * @package Apps\Sys\Entity
  */
-class LoginUser
+class LoginUser extends Entity
 {
     /**
      * 用户ID

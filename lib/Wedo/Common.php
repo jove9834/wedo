@@ -14,9 +14,12 @@ function wd_cache_path($path) {
 /**
  * 取数组值
  *
- * @return void
+ * @param array   $array   数组
+ * @param string  $key     键
+ * @param boolean $default 默认值
+ * @return mixed
  */
-function wd_array_val($array, $key, $default = FALSE) {
+function wd_array_val(array $array, $key, $default = FALSE) {
     if (!$array) {
         return $default;
     }
@@ -200,7 +203,7 @@ function wd_json_decode($str) {
  * 
  * @param string $key
  * @param string $default
- * @return Ambigous <string, mixed>
+ * @return mixed
  */
 function wd_input($key = NULL, $default = FALSE) {
     $request = Wedo\Dispatcher::instance()->getRequest();
@@ -292,7 +295,7 @@ if (! function_exists('wd_load_class')) {
         }
     
         $_class = new ReflectionClass($class);
-        $_classes[$class] = isset($param) ? $_class->newInstanceArgs($param) : new $name();
+        $_classes[$class] = isset($param) ? $_class->newInstanceArgs($param) : $_class->newInstance();
         return $_classes[$class];
     }
 }
@@ -548,6 +551,7 @@ function parse_string($string, $params = array()) {
 /**
  * 格式化字符串
  *
+ * @param string $str 格式化的字符串
  * @return string
  */
 function wd_print($str) {

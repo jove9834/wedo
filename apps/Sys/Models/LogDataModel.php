@@ -9,37 +9,37 @@
  */
 namespace Apps\Sys\Models;
 
-use Common\BaseModel;
+use Wedo\Database\Model;
 
 /**
  * <<文件说明>>
  */
-class LogDataModel extends BaseModel {
+class LogDataModel extends Model {
     /**
      * 实体类名称
      *
-     *  string
+     * @var string
      */
     protected $entityClass = 'Apps\Sys\Entity\LogData';
 
     /**
      * 表名
      *
-     *  string
+     * @var string
      */
     protected $table = 'sys_log_data';
 
     /**
      * 表主键
      *
-     *  string
+     * @var string
      */
     protected $primaryKey = 'id';
 
     /**
      * 值唯一的字段
      *
-     *  string|array
+     * @var string|array
      */
     protected $uniqueColumn = NULL;
 

@@ -10,7 +10,6 @@
 namespace Apps\Sys\Models;
 
 use Apps\Sys\Entity\User;
-use Apps\Sys\Entity\UserAccountIndex;
 use Common\BaseModel;
 
 /**
@@ -76,7 +75,7 @@ class UserModel extends BaseModel {
     /**
      * 根据用户ID取用户的所有登录帐号
      *
-     * @param $uid 用户ID
+     * @param integer $uid 用户ID
      * @return array|NULL
      */
     public function getUserAccounts($uid) {
@@ -86,9 +85,9 @@ class UserModel extends BaseModel {
     /**
      * 修改密码
      *
-     * @param int $uid 用户ID
-     * @param string $newPassword 新密码
-     * @return int
+     * @param integer $uid 用户ID
+     * @param string  $newPassword 新密码
+     * @return integer
      * @throws \Exception
      */
     public function updatePassword($uid, $newPassword) {
@@ -107,7 +106,7 @@ class UserModel extends BaseModel {
      * @param integer $uid     用户ID
      * @param string  $account 帐号名称
      * @param integer $type    类型
-     * @return int
+     * @return integer
      * @throws \Exception
      */
     public function addAccount($uid, $account, $type) {

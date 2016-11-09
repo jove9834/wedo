@@ -19,18 +19,24 @@ class {{$entityName}} extends Entity {
 @endforeach
 
 @foreach($fields as $f)
+    /**
+     * get ${{$f}}
+     * @return mixed
+     */
     public function get{{ucfirst($f)}}() {
         return $this->{{$f}};
     }
 
     /**
-     * @param mixed ${{$f}}
+     * set ${{$f}}
+     * @param string ${{$f}}
      * @param string $adj 条件修饰符
-     * @return void
+     * @return $this
      */
     public function set{{ucfirst($f)}}(${{$f}}, $adj = NULL) {
         $this->{{$f}} = ${{$f}};
         $this->addCondition('{{$f}}', $adj);
+        return $this;
     }
 @endforeach
 

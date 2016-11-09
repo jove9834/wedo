@@ -9,7 +9,12 @@
  */
 
 namespace Common;
+use Apps\Sys\Entity\LogData;
+use Apps\Sys\Models\LogDataModel;
+use Apps\Sys\Service\UserService;
+use Common\Models\LogModel;
 use Wedo\Database\Model;
+use Wedo\Dispatcher;
 
 class BaseModel extends Model {
     /**
@@ -34,7 +39,7 @@ class BaseModel extends Model {
     /**
      * 是否写日志
      *
-     * @var string|array
+     * @var boolean
      */
     protected $writelog = FALSE;
 
@@ -89,44 +94,52 @@ class BaseModel extends Model {
     /**
      * 添加操作日志
      *
-     * @param string $operateType 操作类型
-     * @param string $recordId    相关记录ID
-     * @param array  $updateData  修改后内容
-     * @param array  $srcData     修改前内容
-     * @return void
+     * @param string $operateType   操作类型
+     * @param string $primaryKeyVal 主键值
+     * @param array  $afterData     修改后内容
+     * @param array  $beforeData    修改前内容
+     * @return mixed
      */
-    protected function addOperateLog($operateType, $recordId, $updateData = NULL, $srcData = NULL) {
-        $db = $this->connection();
-
-        if($update_data && $old_data) {
+    protected function addOperateLog($operateType, $primaryKeyVal, $afterData = NULL, $beforeData = NULL) {
+        if($afterData && $beforeData) {
             $dif_data = array();
-            foreach ($update_data as $key => $value) {
-                if($old_data[$key] != $value) {
+            foreach ($afterData as $key => $value) {
+                if($beforeData[$key] != $value) {
                     $dif_data[$key] = $value;
                 }
             }
 
-            $update_data = $dif_data;
+            $afterData = $dif_data;
         }
 
-        $data = array(
-            'operate_type' => $operateType,
-            'table' => $this->table,
-            'row_id' => $recordId,
-            'src_data' => $srcData ? json_encode($srcData, JSON_UNESCAPED_UNICODE) : '',
-            'update_data' => $updateData ? json_encode($updateData, JSON_UNESCAPED_UNICODE) : '',
-            'create_at' => time(),
-            'connection' => $this->connection,
-        );
+        $entity = LogData::create();
+        $entity->setPrimaryKey($primaryKeyVal)
+               ->setOperateType($operateType)
+               ->setCreateAt(time())
+               ->setTable($this->getTable())
+               ->setConn($this->getConnection())
+               ->setRequestUuid(Dispatcher::instance()->getRequest()->getUUID());
 
-        if (defined('LOGIN_UID')) {
-            $data['uid'] = LOGIN_UID;
+        $entity->setOldData($beforeData ? json_encode($beforeData, JSON_UNESCAPED_UNICODE) : '');
+        $entity->setUpdateData($afterData ? json_encode($afterData, JSON_UNESCAPED_UNICODE) : '');
+        if (UserService::isLogined()) {
+            $entity->setUid(UserService::getLoginUid());
         }
 
-        if (defined('WD_OPERATE_NO')) {
-            $data['operate_no'] = WD_OPERATE_NO;
-        }
+        return LogDataModel::instance()->addEntity($entity);
+    }
 
-        return $db->insert('sys_log_data', $data);
+    /**
+     * 获取操作日志记录
+     *
+     * @param mixed   $primaryKeyVal 主键值
+     * @param integer $offset        offset
+     * @param integer $pageSize      pagesize default 10
+     * @return array
+     */
+    public function getOperateLogList($primaryKeyVal, $offset = NULL, $pageSize = 10) {
+        $entity = LogData::create();
+        $entity->setPrimaryKey($primaryKeyVal)->setTable($this->getTable());
+        return LogModel::instance()->getAll($entity, '*', 'id desc', $offset, $pageSize)->entityResult();
     }
 }
