@@ -13,41 +13,6 @@ namespace Wedo;
  * 浏览器信息
  */
 class Browser {
-
-    /**
-     * 手机浏览器列表
-     *
-     * @var array
-     */
-    private static $mobileBrowserList = array(
-        'iphone', 'android', 'phone', 'mobile',
-        'wap', 'netfront', 'java', 'opera mobi',
-        'opera mini', 'ucweb', 'windows ce', 'symbian',
-        'series', 'webos', 'sony', 'blackberry',
-        'dopod', 'nokia', 'samsung', 'palmsource',
-        'xda', 'pieplus', 'meizu', 'midp',
-        'cldc', 'motorola', 'foma', 'docomo',
-        'up.browser', 'up.link', 'blazer', 'helio',
-        'hosin', 'huawei', 'novarra', 'coolpad',
-        'webos', 'techfaith', 'palmsource', 'alcatel',
-        'amoi', 'ktouch', 'nexian', 'ericsson',
-        'philips', 'sagem', 'wellcom', 'bunjalloo',
-        'maui', 'smartphone', 'iemobile', 'spice',
-        'bird', 'zte-', 'longcos', 'pantech',
-        'gionee', 'portalmmm', 'jig browser', 'hiptop',
-        'benq', 'haier', '^lct', '320x320',
-        '240x320', '176x220'
-    );
-
-    /**
-     * 平板标识列表
-     *
-     * @var array
-     */
-    private static $padList = array(
-        'pad', 'gt-p1000'
-    );
-
     /**
      * 浏览器名称
      *
@@ -105,29 +70,20 @@ class Browser {
      * @return void
      */
     protected function detect() {
-        $userAgent = null;
-        if (isset($_SERVER['HTTP_USER_AGENT'])) {
-            $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
-        }
-
+        $detect = new MobileDetect();
+        $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
         if (preg_match('/opera/', $userAgent)) {
-            $name = 'opera';
+            $name = 'Opera';
         } elseif (preg_match('/chrome/', $userAgent)) {
-            $name = 'chrome';
+            $name = 'Chrome';
         } elseif (preg_match('/apple/', $userAgent)) {
-            $name = 'safari';
+            $name = 'Safari';
         } elseif (preg_match('/msie/', $userAgent)) {
-            $name = 'msie';
+            $name = 'IE';
         } elseif (preg_match('/mozilla/', $userAgent) && !preg_match('/compatible/', $userAgent)) {
-            $name = 'mozilla';
+            $name = 'Mozilla';
         } else {
             $name = 'unrecognized';
-        }
-
-        if (preg_match('/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/', $userAgent, $matches)) { // Not Coding Standard
-            $version = $matches[1];
-        } else {
-            $version = 'unknown';
         }
 
         if (preg_match('/linux/', $userAgent)) {
@@ -140,22 +96,11 @@ class Browser {
             $platform = 'unrecognized';
         }
 
-        // 先检查是否Pad
-        if (wd_istrpos($userAgent, self::$padList)) {
-            $device = 'pad';
-        }
-        else if (wd_istrpos($userAgent, self::$mobileBrowserList, TRUE)) {
-            $device = 'mobile';
-        }
-        else {
-            $device = 'pc';
-        }
-
         $this->name = $name;
-        $this->version = $version;
+        $this->version = $detect->version($name);
         $this->platform = $platform;
         $this->userAgent = $userAgent;
-        $this->device = $device;
+        $this->device = ($detect->isMobile() ? ($detect->isTablet() ? 'tablet' : 'phone') : 'computer');
     }
 
     /**

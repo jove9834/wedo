@@ -14,13 +14,13 @@ function wd_cache_path($path) {
 /**
  * 取数组值
  *
- * @param array   $array   数组
+ * @param mixed   $array   数组
  * @param string  $key     键
  * @param boolean $default 默认值
  * @return mixed
  */
-function wd_array_val(array $array, $key, $default = FALSE) {
-    if (!$array) {
+function wd_array_val($array, $key, $default = FALSE) {
+    if (!$array && !is_array($array)) {
         return $default;
     }
 
@@ -207,18 +207,15 @@ function wd_json_decode($str) {
  */
 function wd_input($key = NULL, $default = FALSE) {
     $request = Wedo\Dispatcher::instance()->getRequest();
+    Wedo\Logger::debug("sdfasdfasdf..............");
+    Wedo\Logger::debug($request ? 'aaa': 'bbb');
     if ($key) {
         $result = $request->getQuery($key) ?: $request->getPost($key);
-    }
-    else {
+    } else {
         $result = array_merge($request->getQuery(), $request->getPost());
     }
-    
-    if ($result == NULL) {
-        $result = $default;
-    }
-    
-    return $result;
+
+    return $result ? $result : $default;
 }
 
 /**

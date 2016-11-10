@@ -73,4 +73,34 @@ class LogTypeModel extends BaseModel {
         return $this->get(array('log_key' => $logKey))->entity();
     }
 
+    /**
+     * 获取指定菜单的所有日志类型
+     *
+     * @param integer $menuItemId 菜单项ID
+     * @return array|null 返回array<LogType>
+     */
+    public function getMenuLogTypes($menuItemId) {
+        if (! $menuItemId) {
+            return NULL;
+        }
+
+        $menuItemId = intval($menuItemId);
+        return $this->getAll(array('menu_item_id' => $menuItemId), '*', 'name')->entityResult();
+    }
+
+    /**
+     * 删除菜单项下的所有日志类型
+     *
+     * @param integer $menuItemId 菜单项ID
+     * @return int 返回被删除的记录数
+     */
+    public function deleteByMenuItemId($menuItemId) {
+        if (! $menuItemId) {
+            return 0;
+        }
+
+        $menuItemId = intval($menuItemId);
+        return $this->deleteByWhere(array('menu_item_id' => $menuItemId));
+    }
+
 }

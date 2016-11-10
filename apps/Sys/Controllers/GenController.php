@@ -9,6 +9,7 @@
  */
 namespace Apps\Sys\Controllers;
 
+use Apps\Sys\Service\LogService;
 use Common\Controller;
 use Wedo\Dispatcher;
 use Wedo\Config;
@@ -39,6 +40,8 @@ class GenController extends Controller {
         foreach ($tableList as $table) {
             $this->genFile($table, $ns, $conn, $pre);
         }
+
+        LogService::writeLog('test', $table);
     }
 
     private function genFile($table, $ns, $conn, $pre) {

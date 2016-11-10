@@ -21,7 +21,6 @@ trait InstanceTrait
      * @return static
      */
     public static function instance() {
-        self::$instance = new static();
-        return self::$instance;
+        return self::$instance ? self::$instance : self::$instance = new static();
     }
 }

@@ -334,12 +334,7 @@ class Request {
      * @return string|array
      */
     public function getQuery($name = NULL, $default = NULL) {
-        if ($name) {
-            return wd_array_val($_GET, $name, $default);
-        }
-        else {
-            return $_GET;
-        }
+        return $name ? wd_array_val($_GET, $name, $default) : $_GET;
     }
 
     /**
@@ -350,12 +345,7 @@ class Request {
      * @return string|array
      */
     public function getPost($name = NULL, $default = NULL) {
-        if ($name) {
-            return wd_array_val($_POST, $name, $default);
-        }
-        else {
-            return $_POST;
-        }
+        return $name ? wd_array_val($_POST, $name, $default) : $_POST;
     }
 
     /**
