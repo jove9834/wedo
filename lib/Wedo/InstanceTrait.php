@@ -13,7 +13,7 @@ trait InstanceTrait
     /**
      * @var static
      */
-    private static $instance;
+    private static $instances;
 
     /**
      * 单例模式
@@ -21,6 +21,11 @@ trait InstanceTrait
      * @return static
      */
     public static function instance() {
-        return self::$instance ? self::$instance : self::$instance = new static();
+        $c = get_called_class();
+        if (! isset(self::$instances[$c])) {
+            self::$instances[$c] = new static;
+        }
+
+        return self::$instances[$c];
     }
 }
