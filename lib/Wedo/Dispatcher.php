@@ -12,6 +12,7 @@ namespace Wedo;
 use Wedo\View\ViewBlade;
 use Wedo\Exception\ClassNotFoundException;
 use Wedo\Exception\CHttpException;
+use Exception;
 
 /**
  * 分发，初始化运行环境
@@ -108,14 +109,15 @@ class Dispatcher {
         }
         
         if (! $controller instanceof ControllerAbstract) {
-            throw new \Exception('控制器必须继承ControllerAbstract类');
+            throw new Exception('控制器必须继承ControllerAbstract类');
         }
 
-        $action = $this->getActionName($request);
+        $action = $this->getActionName($controller, $request);
         $params = $request->getParams();
         // Logger::debug('controller class: {}, action: {}', $controller_class, $action);
         $controllerAction = array(&$controller, $action);
         if (is_callable($controllerAction)) {
+            header('Access-Control-Allow-Origin: *');
             call_user_func_array($controllerAction, $params);
         } else {
             throw new CHttpException(404);
@@ -236,9 +238,14 @@ class Dispatcher {
      * @param Request $request 请求实例
      * @return string
      */
-    public function getActionName(Request $request) {
-         return lcfirst($request->getAction()) . 'Action';
-//        return strtolower($request->getMethod()) . ucfirst($request->getAction());
+    public function getActionName($controller, Request $request) {
+        $actionName = strtolower($request->getMethod()) . ucfirst($request->getAction());
+        $controllerAction = array(&$controller, $actionName);
+        if (is_callable($controllerAction)) {
+            return $actionName;
+        } elseif ($request->getAction() === 'index') {
+            return strtolower($request->getMethod());
+        }
     }
 
     /**

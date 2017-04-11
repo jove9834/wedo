@@ -21,7 +21,8 @@ class {{$entityName}} extends Entity {
 @foreach($fields as $f)
     /**
      * get ${{$f}}
-     * @@return mixed
+     *
+     * @return mixed
      */
     public function get{{ucfirst($f)}}() {
         return $this->{{$f}};
@@ -29,9 +30,10 @@ class {{$entityName}} extends Entity {
 
     /**
      * set ${{$f}}
-     * @@param string ${{$f}}
-     * @@param string $adj 条件修饰符
-     * @@return $this
+     *
+     * @param string ${{$f}}
+     * @param string $adj 条件修饰符
+     * @return $this
      */
     public function set{{ucfirst($f)}}(${{$f}}, $adj = NULL) {
         $this->{{$f}} = ${{$f}};

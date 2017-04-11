@@ -511,12 +511,13 @@ class Model {
      * 分页显示
      * 
      * @param mixed  $where    条件
-     * @param string $order_by 排序
+     * @param string $orderBy  排序
      * @param string $select   查询字段
-     * @param int    $per_page 每页记录数
+     * @param int    $page     当前页
+     * @param int    $pageSize 每页记录数
      * @return array (data, total)
      */
-    public function pagination($where, $orderBy = NULL, $select = '*', $page = 1, $pagesize = 15) {
+    public function pagination($where, $orderBy = NULL, $select = '*', $page = 1, $pageSize = 15) {
         $total = $this->getRecordCount($where);
         if (! $total) {
             return array(array(), 0);
@@ -531,7 +532,7 @@ class Model {
             $query->orderBy($orderBy);
         }
 
-        $data = $query->select($select)->page($page, $pagesize)->get()->result();
+        $data = $query->select($select)->page($page, $pageSize)->get()->result();
         
         return array($data, $total);
     }

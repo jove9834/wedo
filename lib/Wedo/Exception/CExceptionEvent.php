@@ -28,7 +28,7 @@ class CExceptionEvent extends CEvent
 	 * @param mixed $sender sender of the event
 	 * @param \Exception $exception the exception
 	 */
-	public function __construct($sender, \Exception $exception)
+	public function __construct($sender, $exception)
 	{
 		$this->exception = $exception;
 		parent::__construct($sender);

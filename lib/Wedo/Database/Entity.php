@@ -28,11 +28,11 @@ class Entity {
 //    protected static $sysadj = array('IN', 'LK','LKA', 'LKB', 'NIN', 'EQ', 'NE', 'LT', 'LE', 'GT', 'GE', 'BTW');
 
     /**
-     * 查询条件
+     * 查询条件修饰符
      *
      * @var string
      */
-    protected $_conditions = array();
+    protected $conditionAdj = array();
 
     /**
      * 创建实体对象
@@ -79,7 +79,7 @@ class Entity {
      * @return $this
      */
     public function addCondition($fieldName, $sysadj = 'EQ') {
-        $this->_conditions[$fieldName] = $sysadj;
+        $this->conditionAdj[$fieldName] = $sysadj;
         return $this;
     }
 
@@ -90,7 +90,7 @@ class Entity {
      * @return string
      */
     public function getConditionAdj($fieldName) {
-        return wd_array_val($this->_conditions, $fieldName, 'EQ');
+        return wd_array_val($this->conditionAdj, $fieldName, 'EQ');
     }
 
     /**
@@ -99,7 +99,7 @@ class Entity {
      * @return $this
      */
     public function removeCondition($fieldName) {
-        unset($this->_conditions[$fieldName]);
+        unset($this->conditionAdj[$fieldName]);
         return $this;
     }
 

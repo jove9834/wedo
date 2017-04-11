@@ -349,9 +349,9 @@ class Application
      * This method displays the exception in HTML when there is
      * no active error handler.
      *
-     * @param \Exception $exception the uncaught exception
+     * @param mixed $exception the uncaught exception
      */
-    public function displayException(\Exception $exception)
+    public function displayException($exception)
     {
         if(WEDO_DEBUG) {
             echo '<h1>' . get_class($exception) . "</h1>\n";
@@ -429,7 +429,7 @@ class Application
      *
      * @param \Exception $exception exception that is not caught
      */
-    public function handleException(\Exception $exception)
+    public function handleException($exception)
     {
         // disable error capturing to avoid recursive errors
         restore_error_handler();
@@ -446,7 +446,6 @@ class Application
         }
 
         Logger::error($message);
-
         if ($this->isCli()) {
             echo $message;
             exit(1);

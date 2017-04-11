@@ -70,7 +70,6 @@ class Browser {
      * @return void
      */
     protected function detect() {
-        $detect = new MobileDetect();
         $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
         if (preg_match('/opera/', $userAgent)) {
             $name = 'Opera';
@@ -96,6 +95,7 @@ class Browser {
             $platform = 'unrecognized';
         }
 
+        $detect = new MobileDetect();
         $this->name = $name;
         $this->version = $detect->version($name);
         $this->platform = $platform;

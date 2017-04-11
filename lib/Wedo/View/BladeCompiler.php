@@ -2,7 +2,7 @@
 namespace Wedo\View;
 
 use Closure;
-use Wedo\Ui\TagFactory;
+use Wedo\Logger;
 use Wedo\Filesystem;
 
 class BladeCompiler {
@@ -84,7 +84,7 @@ class BladeCompiler {
     /**
      * 文件操作类.
      *
-     * @var Wedo\Filesystem
+     * @var Filesystem
      */
     protected $files;
 
@@ -274,7 +274,7 @@ class BladeCompiler {
     {
         $callback = function($match)
         {
-            // Log::debug('match:{}', print_r($match, TRUE));
+//             Logger::debug('match:{}', print_r($match, TRUE));
             if (method_exists($this, $method = 'compile'.ucfirst($match[1])))
             {
                 $match[0] = $this->$method(array_get($match, 3));

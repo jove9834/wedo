@@ -39,6 +39,7 @@ class LogService
                 $log->setBrowserType($browser->getName() . ' ' . $browser->getVersion());
                 $log->setOs($browser->getPlatform());
                 $log->setDevice($browser->getDevice());
+                $log->setUserAgent($browser->getUserAgent());
             }
         }
 

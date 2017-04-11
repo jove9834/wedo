@@ -143,11 +143,9 @@ class Query {
             }
 
             $this->where($name, $val, $_adj, $index);
-            // $this->wheres[] = array('column' => $name, 'operator' => $_adj, 'val' => $val);    
         }
         else {
             $this->where($column, $val, 'EQ', $index);
-            // $this->wheres[] = array('column' => $column, 'operator' => 'EQ', 'val' => $val); 
         }
     }
 
@@ -285,7 +283,7 @@ class Query {
      *
      * @return string 返回查询条件
      */
-    public function getWhere() {
+    public function getWhereString() {
         $whereStr = '';
         
         foreach ($this->wheres as $index => $wheres) {
@@ -409,7 +407,7 @@ class Query {
      *
      * @return string 返回排序语句
      */
-    public function getOrderBy() {
+    public function getOrderByString() {
         $orderStr = '';
         foreach ($this->orderBys as $order) {
             $orderStr .= ',' . $order['column'] . ' ' . $order['direction'];
@@ -424,7 +422,7 @@ class Query {
      *
      * @return string
      */
-    public function getJoin() {
+    public function getJoinString() {
         $join_sql = array();
         foreach ($this->joins as $join) {
             $join_sql[] = wd_print('{} JOIN {} ON {}', $join['adj'], $join['table'], $join['where']);
@@ -438,7 +436,7 @@ class Query {
      *
      * @return string
      */
-    public function getSelect() {
+    public function getSelectString() {
         return $this->selectField;
     }
 
@@ -488,17 +486,17 @@ class Query {
             $this->where($where);
         }
 
-        $sql = wd_print("SELECT {} FROM {} t", $this->getSelect(), $this->model->getTable());
+        $sql = wd_print("SELECT {} FROM {} t", $this->getSelectString(), $this->model->getTable());
 
-        if ($join = $this->getJoin()) {
+        if ($join = $this->getJoinString()) {
             $sql .= " " . $join;
         }
 
-        if ($where = $this->getWhere()) {
+        if ($where = $this->getWhereString()) {
             $sql .= " WHERE " . $where;
         }
 
-        if ($order_by = $this->getOrderBy()) {
+        if ($order_by = $this->getOrderByString()) {
             $sql .= " ORDER BY " . $order_by;
         }
 
@@ -516,7 +514,7 @@ class Query {
      */
     public function update($data, $where = NULL) {
         $where && $this->where($where);
-        $whereStr = $this->getWhere();
+        $whereStr = $this->getWhereString();
         return $this->model->getDB()->update($this->model->getTable(), $data, $whereStr);
     }
 
@@ -550,7 +548,7 @@ class Query {
             $this->where($where);
         }
 
-        $whereStr = $this->getWhere();
+        $whereStr = $this->getWhereString();
 
         return $this->model->getDB()->delete($this->model->getTable(), $whereStr);
     }
@@ -609,7 +607,7 @@ class Query {
      */
     public function entity() {
         $row = $this->row();
-        return $this->arrayToEntity($row);
+        return $row ? $this->arrayToEntity($row) : NULL;
     }
 
     /**
@@ -620,8 +618,10 @@ class Query {
     public function entityResult() {
         $result = array();
         $data = $this->result();
-        foreach ($data as $row) {
-            $result[] = $this->arrayToEntity($row);
+        if ($data) {
+            foreach ($data as $row) {
+                $result[] = $this->arrayToEntity($row);
+            }
         }
 
         return $result;

@@ -75,6 +75,12 @@ class Log extends Entity {
      */
     protected $browserType;
 
+    /**
+     * User Agent
+     * @var string
+     */
+    protected $userAgent;
+
     public function getId() {
         return $this->id;
     }
@@ -82,12 +88,14 @@ class Log extends Entity {
     /**
      * @param  mixed $id
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setId($id, $adj = NULL) {
         $this->id = $id;
         $this->addCondition('id', $adj);
+        return $this;
     }
+
     public function getRequestUuid() {
         return $this->requestUuid;
     }
@@ -95,11 +103,12 @@ class Log extends Entity {
     /**
      * @param  mixed $requestUuid
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setRequestUuid($requestUuid, $adj = NULL) {
         $this->requestUuid = $requestUuid;
         $this->addCondition('requestUuid', $adj);
+        return $this;
     }
     public function getUid() {
         return $this->uid;
@@ -108,11 +117,12 @@ class Log extends Entity {
     /**
      * @param  mixed $uid
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setUid($uid, $adj = NULL) {
         $this->uid = $uid;
         $this->addCondition('uid', $adj);
+        return $this;
     }
     public function getLogKey() {
         return $this->logKey;
@@ -121,11 +131,12 @@ class Log extends Entity {
     /**
      * @param  mixed $logKey
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setLogKey($logKey, $adj = NULL) {
         $this->logKey = $logKey;
         $this->addCondition('logKey', $adj);
+        return $this;
     }
     public function getDescription() {
         return $this->description;
@@ -134,11 +145,12 @@ class Log extends Entity {
     /**
      * @param  mixed $description
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setDescription($description, $adj = NULL) {
         $this->description = $description;
         $this->addCondition('description', $adj);
+        return $this;
     }
     public function getCreateAt() {
         return $this->createAt;
@@ -147,11 +159,12 @@ class Log extends Entity {
     /**
      * @param  mixed $createAt
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setCreateAt($createAt, $adj = NULL) {
         $this->createAt = $createAt;
         $this->addCondition('createAt', $adj);
+        return $this;
     }
     public function getIpAddress() {
         return $this->ipAddress;
@@ -160,11 +173,12 @@ class Log extends Entity {
     /**
      * @param  mixed $ipAddress
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setIpAddress($ipAddress, $adj = NULL) {
         $this->ipAddress = $ipAddress;
         $this->addCondition('ipAddress', $adj);
+        return $this;
     }
     public function getDevice() {
         return $this->device;
@@ -173,11 +187,12 @@ class Log extends Entity {
     /**
      * @param  mixed $device
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setDevice($device, $adj = NULL) {
         $this->device = $device;
         $this->addCondition('device', $adj);
+        return $this;
     }
     public function getOs() {
         return $this->os;
@@ -186,11 +201,12 @@ class Log extends Entity {
     /**
      * @param  mixed $os
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setOs($os, $adj = NULL) {
         $this->os = $os;
         $this->addCondition('os', $adj);
+        return $this;
     }
     public function getBrowserType() {
         return $this->browserType;
@@ -199,11 +215,12 @@ class Log extends Entity {
     /**
      * @param  mixed $browserType
      * @param  string $adj 条件修饰符
-     * @return  void
+     * @return  $this
      */
     public function setBrowserType($browserType, $adj = NULL) {
         $this->browserType = $browserType;
         $this->addCondition('browserType', $adj);
+        return $this;
     }
 
     /**
@@ -222,6 +239,22 @@ class Log extends Entity {
      */
     public function formatCreateAt() {
         return date('Y-m-d H:i:s', $this->createAt);
+    }
+
+    /**
+     *
+     * @param string $userAgent ua
+     * @param string $adj       条件修饰符
+     * @return $this
+     */
+    public function setUserAgent($userAgent, $adj = NULL) {
+        $this->userAgent = $userAgent;
+        $this->addCondition('user_agent', $adj);
+        return $this;
+    }
+
+    public function getUserAgent() {
+        return $this->userAgent;
     }
 
 }
