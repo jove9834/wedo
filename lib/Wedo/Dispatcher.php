@@ -235,7 +235,8 @@ class Dispatcher {
     /**
      * 获取Action名称
      *
-     * @param Request $request 请求实例
+     * @param mixed   $controller 请求实例
+     * @param Request $request    请求实例
      * @return string
      */
     public function getActionName($controller, Request $request) {

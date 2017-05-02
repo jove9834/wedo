@@ -11,7 +11,7 @@ namespace Common\Core;
 
 use Wedo\Cache\Cache;
 
-class CacheAbstract {
+abstract class CacheAbstract {
     /**
      * 获取缓存KEY
      *

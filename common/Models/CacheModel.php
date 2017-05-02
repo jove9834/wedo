@@ -43,7 +43,7 @@ class CacheModel extends BaseModel {
      * @return array
      */
     public function getCache($name) {
-        return $this->get(array('cache_key' => $name));
+        return $this->get(array('cache_key' => $name))->row();
     }
 
     /**
@@ -53,7 +53,7 @@ class CacheModel extends BaseModel {
      * @return array
      */
     public function getDataByModule($module) {
-        $rows = $this->getAll(array('module' => $module));        
+        $rows = $this->getAll(array('module' => $module))->result();
         return $rows;
     }
 

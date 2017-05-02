@@ -9,8 +9,8 @@
  */
 namespace Common\Core;
 
-use Wedo\Logger;
 use Common\Models\CacheModel;
+use Exception;
 
 /**
  * 缓存管理类
@@ -22,16 +22,17 @@ class CacheManager {
      * @var array
      */
     private static $_cache = array();
-    
+
     /**
      * 执行监听
      *
      * @param string $name 缓存名称
-     * @return ICache
+     * @return CacheAbstract
+     * @throws \Exception
      */
     public static function getCache($name) {
         if (! $name) {
-            throw new \Exception("缓存名称不能为空！");
+            throw new Exception("缓存名称不能为空！");
         }
 
         if (isset(self::$_cache[$name])) {
@@ -40,12 +41,12 @@ class CacheManager {
 
         $cacheInfo = CacheModel::instance()->getCache($name);
         if (! $cacheInfo || ! $cacheInfo['class_name']) {
-            throw new \Exception("缓存配置不存在！");
+            throw new Exception("缓存配置不存在！");
         }
 
         $reflection = new \ReflectionClass($cacheInfo['class_name']);
-        if (! $reflection->implementsInterface('Common\Core\ICache')) {
-            throw new \Exception("缓存类必须实现ICache接口");
+        if (! $reflection->isSubclassOf('Common\Core\CacheAbstract')) {
+            throw new Exception("缓存类必须实现Common\\Core\\CacheAbstract接口");
         }
 
         $cache = $reflection->newInstance();

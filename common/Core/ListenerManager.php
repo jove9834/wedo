@@ -9,6 +9,7 @@
  */
 namespace Common\Core;
 
+use Exception;
 use Wedo\Logger;
 
 /**
@@ -36,8 +37,7 @@ class ListenerManager {
         foreach ($listeners as $class) {
             try {
                 self::executeListener($event, $class, $parameters);
-            }
-            catch (\Exception $e) {
+            } catch (Exception $e) {
                 Logger::error($e->getMessage());
             }
         }
@@ -49,7 +49,7 @@ class ListenerManager {
      * @param string $event      监听名称
      * @param string $class      监听类名
      * @param array  $parameters 参数
-     * @return void
+     * @throws Exception
      */
     private static function executeListener($event, $class, array $parameters) {
         if (! $class) {
